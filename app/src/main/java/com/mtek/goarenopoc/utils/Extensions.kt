@@ -1,0 +1,91 @@
+package com.mtek.goarenopoc.utils
+
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import okhttp3.RequestBody
+import okio.Buffer
+import java.io.IOException
+
+
+
+fun <T : RequestBody?> T.bodyToString(): String {
+    return try {
+        val buffer = Buffer()
+        if (this != null) this.writeTo(buffer) else return ""
+        buffer.readUtf8()
+    } catch (e: IOException) {
+        "did not work"
+    }
+}
+
+
+
+
+fun <T : AppCompatActivity> AppCompatActivity.extStartActivity(className: Class<T>, bundle: Bundle) {
+    startActivity(Intent(this, className).putExtras(bundle))
+}
+
+infix fun <T : AppCompatActivity> AppCompatActivity.extStartActivity(className: Class<T>) {
+    startActivity(Intent(this, className))
+
+}
+
+infix fun <T : AppCompatActivity> AppCompatActivity.extLogOutActivity(className: Class<T>) {
+    startActivity(
+        Intent(this, className).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    )
+}
+
+infix fun <T : AppCompatActivity> AppCompatActivity.extClearTopStartActivity(className: Class<T>) {
+    startActivity(
+        Intent(this, className).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    )
+}
+
+
+infix fun Context.extToast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
+fun Context.showToast(text: String) {
+    Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+}
+
+fun View.visible() {
+    this.visibility = View.VISIBLE
+}
+
+fun View.gone() {
+    this.visibility = View.GONE
+}
+
+fun Context.extStartActivity(intent: Intent) {
+    startActivity(intent)
+}
+
+
+/**
+ *              openActivity<MyActivity> {
+ *                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+ *               putExtra(LaBoxConstants.DEFAULT_LANDING, Default_Landing)
+ *               putExtra(HomeActivity.APP_RELAUNCH, AppReLaunched)
+ *                    }
+ *
+ * */
+
+inline fun <reified T : Activity> Context.openActivity(noinline extra: Intent.() -> Unit) {
+    val intent = Intent(this, T::class.java)
+    intent.extra()
+    startActivity(intent)
+}
+
+
+
+
