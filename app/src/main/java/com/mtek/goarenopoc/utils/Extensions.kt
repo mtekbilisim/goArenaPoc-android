@@ -4,13 +4,14 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import okhttp3.RequestBody
 import okio.Buffer
 import java.io.IOException
-
+import java.io.Serializable
 
 
 fun <T : RequestBody?> T.bodyToString(): String {
@@ -21,6 +22,40 @@ fun <T : RequestBody?> T.bodyToString(): String {
     } catch (e: IOException) {
         "did not work"
     }
+}
+
+fun emptyString(): String = ""
+fun emptyNumber(): Int = -1
+fun emptyDouble(): Double = 0.0
+fun nullObject() = null
+fun emptyBoolean(): Boolean = false
+
+fun <T> Bundle.put(key: String, value: T) {
+    when (value) {
+        is Boolean -> putBoolean(key, value)
+        is String -> putString(key, value)
+        is Int -> putInt(key, value)
+        is Short -> putShort(key, value)
+        is Long -> putLong(key, value)
+        is Byte -> putByte(key, value)
+        is ByteArray -> putByteArray(key, value)
+        is Char -> putChar(key, value)
+        is CharArray -> putCharArray(key, value)
+        is CharSequence -> putCharSequence(key, value)
+        is Float -> putFloat(key, value)
+        is Bundle -> putBundle(key, value)
+        is Parcelable -> putParcelable(key, value)
+        is Serializable -> putSerializable(key, value)
+        else -> throw IllegalStateException("")
+    }
+}
+
+fun View.setSafeOnClickListener(onSafeClick: (View) -> Unit) {
+    val safeClick = SafeClickListener {
+        onSafeClick(it)
+    }
+    setOnClickListener(safeClick)
+
 }
 
 
