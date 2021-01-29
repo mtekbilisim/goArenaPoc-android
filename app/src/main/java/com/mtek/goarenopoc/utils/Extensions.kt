@@ -5,9 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.mtek.goarenopoc.R
 import okhttp3.RequestBody
 import okio.Buffer
 import java.io.IOException
@@ -50,6 +56,30 @@ fun <T> Bundle.put(key: String, value: T) {
     }
 }
 
+fun loadImage(
+    view: ImageView,
+    url: String?,
+    progressDrawable: CircularProgressDrawable?
+) {
+    val options: RequestOptions = RequestOptions()
+        .placeholder(progressDrawable)
+        .error(R.mipmap.ic_launcher_round)
+    Glide.with(view.context)
+        .setDefaultRequestOptions(options)
+        .load(url)
+        .into(view)
+}
+
+fun getProgressDrawable(context: Context?): CircularProgressDrawable {
+    val progressDrawable = CircularProgressDrawable(context!!)
+    progressDrawable.strokeWidth = 10f
+    progressDrawable.centerRadius = 50f
+    progressDrawable.start()
+    return progressDrawable
+}
+
+fun Any.flag_error(message: String, tag:String = "flag_error") = Log.e(tag,message)
+fun Any.flag_debug(message: String, tag:String="flag_debug") = Log.e(tag,message)
 fun View.setSafeOnClickListener(onSafeClick: (View) -> Unit) {
     val safeClick = SafeClickListener {
         onSafeClick(it)
