@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-android-extensions'
 }
 
 android {
@@ -9,11 +10,12 @@ android {
 
     defaultConfig {
         applicationId "com.mtek.goarenopoc"
-        minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
-
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
+        versionCode version_code
+        versionName version_name
+        signingConfig signingConfigs.debug
+        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -22,6 +24,28 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug{
+            minifyEnabled false
+            debuggable true
+            applicationIdSuffix ".stb"
+            versionNameSuffix '-stb'
+            resValue "string", "app_name", "Kidz Jungle DEBUG"
+            buildConfigField "String", 'BASE_URL', '"https://kidsapi.mtek.me/"'
+            buildConfigField "Boolean", 'DEV_MOD', 'false'
+
+        }
+
+        applicationVariants.all { variant ->
+            variant.outputs.each { output ->
+
+                if (versionNamePrefix != null && versionNamePrefix != "") {
+                    output.outputFileName = versionNamePrefix + "_" + output.outputFile.name
+                }
+            }
+        }
+
+        buildFeatures.viewBinding true
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -34,12 +58,57 @@ android {
 
 dependencies {
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation androidxsupportDependencies.kotlin_std
+    implementation androidxsupportDependencies.appcompat
+    implementation androidxsupportDependencies.core_ktx
+    implementation androidxsupportDependencies.legacy4_support
+    implementation androidxsupportDependencies.viewpager2
+    implementation androidxsupportDependencies.material_io
+    implementation androidxsupportDependencies.cardview
+    testImplementation androidxsupportDependencies.junit
+    androidTestImplementation androidxsupportDependencies.ext_junit
+    androidTestImplementation androidxsupportDependencies.espresso
+    implementation androidxsupportDependencies.constraintlayout
+
+    //AdvancedLib
+    implementation kotlinAdvancedDependencies.lifecycleExtention
+    implementation kotlinAdvancedDependencies.coroutine_core
+    implementation kotlinAdvancedDependencies.coroutine_android
+    implementation kotlinAdvancedDependencies.viewmodel_ktx
+    implementation kotlinAdvancedDependencies.livedata_ktx
+    implementation kotlinAdvancedDependencies.coroutine_adapter
+    implementation kotlinAdvancedDependencies.koin
+    implementation kotlinAdvancedDependencies.koin_viewmodel
+    implementation kotlinAdvancedDependencies.koin_core
+    implementation kotlinAdvancedDependencies.lifecycle
+
+    //NetWorkLib
+    implementation kotlinNetworkDependencies.logging_intercepter
+    implementation kotlinNetworkDependencies.retrofit
+    implementation kotlinNetworkDependencies.gson_converter
+
+    //ImageLib
+    implementation kotlinImageDependencies.glide
+    annotationProcessor kotlinImageDependencies.glide_processor
+
+    //GeneralLib
+    implementation kotlinGeneralDependencies.nineoldandroids
+    implementation kotlinGeneralDependencies.submitButton
+    implementation kotlinGeneralDependencies.wang_avi
+    implementation kotlinGeneralDependencies.checkbox
+    implementation kotlinGeneralDependencies.keyboard_visibility
+    implementation kotlinGeneralDependencies.circle_image
+    implementation kotlinGeneralDependencies.easy_image
+    implementation kotlinGeneralDependencies.switch_button
+    implementation kotlinGeneralDependencies.metarial_edittext
+    implementation kotlinGeneralDependencies.spanny
+    implementation kotlinGeneralDependencies.ssp
+    implementation kotlinGeneralDependencies.sdp
+    implementation kotlinGeneralDependencies.shimmer
+    implementation kotlinGeneralDependencies.layoutmanager
+    implementation kotlinGeneralDependencies.multidex
+    compileOnly kotlinGeneralDependencies.checker_qual
+    implementation kotlinGeneralDependencies.annotation
+    implementation kotlinGeneralDependencies.lottie
+
 }
