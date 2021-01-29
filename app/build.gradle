@@ -29,8 +29,8 @@ android {
             debuggable true
             applicationIdSuffix ".stb"
             versionNameSuffix '-stb'
-            resValue "string", "app_name", "Kidz Jungle DEBUG"
-            buildConfigField "String", 'BASE_URL', '"https://kidsapi.mtek.me/"'
+            resValue "string", "app_name", "Go Areno POC"
+            buildConfigField "String", 'BASE_URL', '"..."'
             buildConfigField "Boolean", 'DEV_MOD', 'false'
 
         }
