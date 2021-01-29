@@ -1,7 +1,7 @@
 package com.mtek.goarenopoc.utils
 
 import androidx.annotation.StringRes
-import member.kidzjungle.mtek.R
+import com.mtek.goarenopoc.R
 
 enum class ErrorType(@StringRes val messageId: Int) {
     UNKNOWN_ERROR(R.string.UNKNOWN_ERROR),

@@ -1,4 +1,10 @@
 <resources>
     <string name="connection_error">Internet bağlantısı bulunamadı. Lütfen cihazınızın internete bağlı olduğundan emin olun</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="UNKNOWN_ENDPOINT">Bilinmeyen endpoint.</string>
+    <string name="UNKNOWN_ERROR">Bilinmeyen hata.</string>
+    <string name="SUCCESS">""</string>
+    <string name="CONNECTION_TIME_OUT">Bağlantı zaman aşımına uğradı.</string>
 
 </resources>

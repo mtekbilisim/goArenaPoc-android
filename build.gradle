@@ -61,6 +61,7 @@ buildscript {
         multidex_version = "2.0.1"
         checker_qual_version = "3.3.0"
         annotation_version = "1.1.0"
+        navigation_component ="2.0.0"
 
         androidxsupportDependencies = [
                 kotlin_std      : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
@@ -74,6 +75,8 @@ buildscript {
                 junit           : "junit:junit:$junit_version", //testImplementation
                 ext_junit       : "androidx.test.ext:junit:$ext_junit_version", //androidTestImplementation
                 espresso        : "androidx.test.espresso:espresso-core:$espresso_core_version", // androidTestImplementation
+                navigation_fragment : "androidx.navigation:navigation-fragment-ktx:$navigation_component",
+                navigation_ui : "androidx.navigation:navigation-ui-ktx:$navigation_component"
 
         ]
 

@@ -24,7 +24,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        debug{
+        debug {
             minifyEnabled false
             debuggable true
             applicationIdSuffix ".stb"
@@ -69,6 +69,8 @@ dependencies {
     androidTestImplementation androidxsupportDependencies.ext_junit
     androidTestImplementation androidxsupportDependencies.espresso
     implementation androidxsupportDependencies.constraintlayout
+    implementation androidxsupportDependencies.navigation_fragment
+    implementation androidxsupportDependencies.navigation_ui
 
     //AdvancedLib
     implementation kotlinAdvancedDependencies.lifecycleExtention

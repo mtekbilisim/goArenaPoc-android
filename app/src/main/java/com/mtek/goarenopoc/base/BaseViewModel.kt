@@ -47,10 +47,10 @@ abstract class BaseViewModel<out REPO : BaseRepository>(
                         errMsg?.postValue(BaseErrorModel(404, Errors(0, "timeException")))
                     }
                     is IllegalStateException -> {
-                        errMsg?.postValue(BaseErrorModel(404, Errors(0, "${(exception as IllegalStateException).message}")))
+                        errMsg?.postValue(BaseErrorModel(404, Errors(0, "${(exception).message}")))
                     }
                     is JsonSyntaxException -> {
-                        errMsg?.postValue(BaseErrorModel(404, Errors(0, "${(exception as JsonSyntaxException).message}")))
+                        errMsg?.postValue(BaseErrorModel(404, Errors(0, "${(exception).message}")))
                     }
                     is UnknownHostException -> {
                         errMsg?.postValue(BaseErrorModel(101, Errors(0, "Internet bağlantısı bulunamadı. Lütfen cihazınızın internete bağlı olduğundan emin olun")))
@@ -79,7 +79,7 @@ abstract class BaseViewModel<out REPO : BaseRepository>(
 
                             GsonBuilder().setPrettyPrinting().create()
                                 .fromJson((exception as HttpException).response()?.errorBody()?.charStream(), BaseErrorModel::class.java)
-                        error.code = (exception as HttpException).code()
+                        error.code = exception.code()
                         errMsg?.postValue(error)
                     }
                 }
