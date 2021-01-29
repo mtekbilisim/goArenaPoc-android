@@ -11,6 +11,7 @@ object Constants {
     const val HEADER_TIME_ZONE = "timezone"
     const val DEVICES_TOKEN = "deviceToken"
     const val DEVICES_NAME: String = "deviceName"
+    var DEVICES_VALUE: String? = emptyString()
     const val PHOTOS_KEY = "easy_image_photos_list"
     const val SAVE_INFORMATION = "saveInformation"
     const val EMAIL = "email"

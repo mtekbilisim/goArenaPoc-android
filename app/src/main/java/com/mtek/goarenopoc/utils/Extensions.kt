@@ -14,6 +14,9 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.mtek.goarenopoc.R
+import com.mtek.goarenopoc.base.BaseActivity
+import com.mtek.goarenopoc.base.Errors
+import com.mtek.goarenopoc.utils.manager.LocalDataManager
 import okhttp3.RequestBody
 import okio.Buffer
 import java.io.IOException
@@ -149,6 +152,17 @@ inline fun <reified T : Activity> Context.openActivity(noinline extra: Intent.()
     val intent = Intent(this, T::class.java)
     intent.extra()
     startActivity(intent)
+}
+
+
+fun BaseActivity<*, *>.errorControl(errorCode: Int, errorModel: Errors) {
+
+}
+
+fun <T : View> T.isBackButton(context: Context) {
+    this.setOnClickListener {
+        (context as Activity).finish()
+    }
 }
 
 

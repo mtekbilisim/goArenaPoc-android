@@ -1,3 +1,4 @@
 <resources>
+    <string name="connection_error">Internet bağlantısı bulunamadı. Lütfen cihazınızın internete bağlı olduğundan emin olun</string>
 
 </resources>
