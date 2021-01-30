@@ -7,7 +7,7 @@ import com.mtek.goarenopoc.R
 import com.mtek.goarenopoc.base.BaseAdapter
 import com.mtek.goarenopoc.data.model.Data
 
-class HolderThumnail(parent: ViewGroup) : RecyclerView.ViewHolder(
+class HolderThumbnail(parent: ViewGroup) : RecyclerView.ViewHolder(
     LayoutInflater.from(parent.context).inflate(
         R.layout.row_item_feed_thumnail_layout,
         parent,

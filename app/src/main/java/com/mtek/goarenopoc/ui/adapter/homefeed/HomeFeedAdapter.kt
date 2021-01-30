@@ -15,7 +15,7 @@ class HomeFeedAdapter(
         return when(viewType){
 
             LayoutType.Thumnail.id->{
-                    HolderThumnail(parent)
+                    HolderThumbnail(parent)
             }
             else ->{
                     HolderOnlyText(parent)
@@ -27,7 +27,7 @@ class HomeFeedAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder.itemViewType) {
             LayoutType.Thumnail.id -> {
-                (holder as HolderThumnail).bind(items[position],onItemClickListener)
+                (holder as HolderThumbnail).bind(items[position],onItemClickListener)
             }
 
 
