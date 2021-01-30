@@ -16,7 +16,7 @@
             android:id="@+id/profileImage"
             android:layout_width="@dimen/_40ssp"
             android:layout_height="@dimen/_40ssp"
-            android:layout_marginStart="@dimen/_16ssp"
+            android:layout_marginStart="@dimen/_12ssp"
             android:src="@color/color_yellow" />
 
         <LinearLayout
@@ -70,5 +70,35 @@
         android:layout_margin="@dimen/_6ssp"
         android:text="Düşleyin, boyayın, paylaşın… Renkler de düşler gibi özgürdür… İşte size renklerin kanatlarında düşlere yolculuk yapmak için bir fırsat! Modern nakışlar…"/>
 
+
+    <LinearLayout
+        android:layout_marginStart="@dimen/_10ssp"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/_8ssp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_6ssp"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8ssp"
+            android:drawableStart="@drawable/ic_liked"
+            android:textStyle="bold"
+            android:text="   953" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8ssp"
+            android:drawableStart="@drawable/ic_comment"
+            android:drawablePadding="@dimen/_2ssp"
+            android:text="  22" />
+
+
+
+
+
+    </LinearLayout>
 
 </LinearLayout>
