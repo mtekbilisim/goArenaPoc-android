@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/yellow</item>
+        <item name="android:fontFamily">@font/turkcell_satura_medium</item>
 
-
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+    </style>
 
     <style name="fullScreenDialog" parent="Theme.MaterialComponents.Light.Dialog">
         <item name="colorPrimary">@color/purple_500</item>
@@ -16,4 +23,9 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
+
+    <style name="BottomNavigation.ActiveItemTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/turkcell_satura_medium</item>
+    </style>
 </resources>

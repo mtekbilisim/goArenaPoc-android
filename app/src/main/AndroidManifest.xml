@@ -37,7 +37,7 @@
         android:name="com.mtek.BaseApp"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.GoArenoPoc">
+        android:theme="@style/AppTheme">
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

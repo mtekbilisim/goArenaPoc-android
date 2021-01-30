@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    tools:context=".ui.fragment.login.LoginFragment">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="@dimen/_60ssp"
+        android:layout_height="@dimen/_60ssp"
+        android:layout_marginTop="@dimen/_60ssp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/logo_turkcell"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/go_areno"
+        android:textSize="@dimen/_24ssp"
+        android:textColor="@color/white"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/_20ssp"/>
+
+
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_16ssp"
+            android:orientation="vertical">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sign_in"
+                android:textColor="@color/white"
+                android:layout_marginStart="@dimen/_16ssp"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:textSize="@dimen/_16ssp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/color_white_half_transparent"
+                android:layout_marginTop="@dimen/_16ssp"/>
+
+
+            <com.mtek.goarenopoc.module.textinput.TextInputView
+                android:layout_marginTop="@dimen/_20ssp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:isForced="false"
+                app:inputType="email"
+                app:inputHint="example@turkcell.com.tr"
+                app:inputTitle="Kullanıcı Adı"/>
+
+            <com.mtek.goarenopoc.module.textinput.TextInputView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8ssp"
+                app:inputHint="******"
+                app:inputTitle="Şifre"
+                app:isForced="false"
+                app:inputType="passwordd"
+                 />
+
+            <LinearLayout
+                android:gravity="end|center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <cn.refactor.library.SmoothCheckBox
+                    android:id="@+id/rememberMe"
+                    android:layout_width="@dimen/_16ssp"
+                    android:layout_height="@dimen/_16ssp"
+                    android:layout_marginTop="@dimen/_6ssp"
+                    app:color_checked="@color/colorPrimary"
+                    app:color_tick="@color/color_yellow" />
+
+                <TextView
+                    android:id="@+id/txtRemember"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8ssp"
+                    android:layout_marginTop="@dimen/_8ssp"
+                    android:layout_marginEnd="@dimen/_16sdp"
+                    android:gravity="center"
+                    android:text="Beni Hatırla?"
+                    android:textColor="@color/white" />
+
+
+            </LinearLayout>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_80ssp"
+                android:padding="@dimen/_10ssp"
+                android:text="@string/sign_in"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp"
+                app:cornerRadius="@dimen/_10ssp"
+                android:layout_marginTop="@dimen/_30ssp"
+                app:rippleColor="@color/color_yellow"
+                app:elevation="@dimen/_4ssp"
+                android:backgroundTint="@color/color_yellow"/>
+
+
+
+
+
+        </LinearLayout>
+
+
+    <ImageView
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/forgot"
+        android:layout_marginTop="@dimen/_20ssp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_forgot_password"/>
+
+
+
+
+
+</LinearLayout>

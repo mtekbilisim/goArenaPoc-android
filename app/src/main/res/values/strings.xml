@@ -6,5 +6,7 @@
     <string name="UNKNOWN_ERROR">Bilinmeyen hata.</string>
     <string name="SUCCESS">""</string>
     <string name="CONNECTION_TIME_OUT">Bağlantı zaman aşımına uğradı.</string>
+    <string name="go_areno">Go Arena</string>
+    <string name="sign_in">Giriş Yap</string>
 
 </resources>

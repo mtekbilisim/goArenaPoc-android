@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutToolbar"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:background="@color/colorPrimary"
+    app:cardCornerRadius="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent">
+
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_gravity="end"
+                android:layout_height="match_parent"
+                android:padding="@dimen/_12ssp"
+                android:src="@drawable/ic_search"
+                app:tint="@color/white" />
+
+            <ImageView
+                android:layout_width="@dimen/_60ssp"
+                android:layout_height="match_parent"
+                android:padding="@dimen/_8ssp"
+                android:layout_gravity="center"
+                android:src="@drawable/logo_turkcell" />
+
+        </FrameLayout>
+
+
+        <TextView
+            android:id="@+id/txtToolbarTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="24dp"
+            android:textSize="20sp"
+            android:visibility="gone"
+            tools:text="Title" />
+
+    </LinearLayout>
+
+</LinearLayout>

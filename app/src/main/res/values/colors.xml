@@ -7,4 +7,74 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="colorPrimary">#059FE7</color>
+    <color name="colorPrimaryDark">#0154A4</color>
+    <color name="color_yellow">#E8B80C</color>
+    <color name="color_yellow_300">#E8E50C</color>
+    <color name="color_form_view_title">#0154A4</color>
+
+    <color name="chart_1">#377EB8</color>
+    <color name="chart_2">#66A61D</color>
+    <color name="chart_3">#984EA2</color>
+    <color name="chart_4">#02D2D5</color>
+    <color name="chart_5">#FF7F00</color>
+    <color name="chart_6">#AF8D00</color>
+    <color name="chart_7">#7F80CC</color>
+    <color name="chart_8">#C42D60</color>
+    <color name="chart_9">#A65727</color>
+    <color name="chart_10">#F781BE</color>
+    <color name="chart_11">#8DD3C7</color>
+    <color name="chart_12">#BEBAD9</color>
+    <color name="chart_13">#FB8072</color>
+    <color name="chart_14">#80B1D3</color>
+
+    <color name="grey_40">#999999</color>
+    <color name="grey_60">#666666</color>
+    <color name="grey_80">#37474F</color>
+    <color name="grey_90">#263238</color>
+
+    <color name="orange">#FDAC54</color>
+    <color name="firstGradientColor">#2BCCE1</color>
+    <color name="secondGradientColor">#0CA2B5</color>
+    <color name="thirdGradientColor">#1B8CBF</color>
+    <color name="fourthGradientColor">#098AF1</color>
+    <color name="fifthGradientColor">#0154A4</color>
+    <color name="colorTranslucentGray">#FFE000</color>
+    <color name="colorTransparent">#00000000</color>
+    <color name="background">#dddddd</color>
+
+    <color name="color_black">#000000</color>
+    <color name="color_white">#FFFFFF</color>
+    <color name="color_white_half_transparent">#96ffffff</color>
+    <color name="transparent">#99ffffff</color>
+    <color name="color_aqua">#3FB0E8</color>
+    <color name="color_red">#FF4500</color>
+
+
+    <color name="color_route_green">#0EC52E</color>
+    <color name="color_buildnglist_green">#c8e6c9</color>
+    <color name="color_route_red">#ff0000</color>
+    <color name="color_route_pink">#ffbebe</color>
+    <color name="color_route_light_green">#a3ff74</color>
+    <color name="color_route_orange">#ff7900</color>
+
+
+    <color name="color_gray">#E6EEF5</color>
+    <color name="color_gray_light">#ECEFF1</color>
+    <color name="color_gray_separator">#dadada</color>
+    <color name="color_gray_switch_text">#A0A0A0</color>
+    <color name="color_soft_pink">#FFEBE6</color>
+    <color name="color_dark_red">#B30000</color>
+
+    <color name="color_dark_green">#005D23</color>
+    <color name="color_transparent_blue">#2D0023FF</color>
+
+
+    <color name="color_view_line_default">#dadada</color>
+    <color name="color_view_line_error">#FF4500</color>
+
+    <color name="color_form_background">#FCFCFC</color>
+    <color name="color_form_view_hint">#6D6D6D</color>
+    <color name="color_form_view_hint_not_focus">#ADADAD</color>
 </resources>

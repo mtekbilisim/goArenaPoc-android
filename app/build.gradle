@@ -71,6 +71,7 @@ dependencies {
     implementation androidxsupportDependencies.constraintlayout
     implementation androidxsupportDependencies.navigation_fragment
     implementation androidxsupportDependencies.navigation_ui
+    implementation androidxsupportDependencies.navigation_frag
 
     //AdvancedLib
     implementation kotlinAdvancedDependencies.lifecycleExtention

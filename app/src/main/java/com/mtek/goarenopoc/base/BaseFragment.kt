@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.NavHostFragment
 import androidx.viewbinding.ViewBinding
 import com.mtek.goarenopoc.module.progress.ProgressBar
+import com.mtek.goarenopoc.utils.extToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.reflect.KClass
+
 
 abstract class BaseFragment<VB : ViewBinding, out BVM : BaseViewModel<BaseRepository>>(
     viewModelType: KClass<out BVM>
@@ -44,8 +48,18 @@ abstract class BaseFragment<VB : ViewBinding, out BVM : BaseViewModel<BaseReposi
         savedInstanceState: Bundle?
     ): View? {
         binding = getViewBinding()
+//        requireActivity().onBackPressedDispatcher.addCallback(
+//            viewLifecycleOwner,
+//            object : OnBackPressedCallback(true) {
+//
+//                override fun handleOnBackPressed() {
+//                    goBack()
+//                }
+//            });
         return  binding.root
     }
+
+
 
     protected inline fun viewModel(action: BVM.() -> Unit) {
         action(viewModel)
