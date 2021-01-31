@@ -1,11 +1,20 @@
 package com.mtek.goarenopoc.base
 
 
+import android.R
+import android.app.ProgressDialog
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.View
+import android.view.Window
+import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.snackbar.Snackbar
 import com.mtek.goarenopoc.module.progress.ProgressBar
 import com.mtek.goarenopoc.utils.errorControl
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -13,7 +22,7 @@ import kotlin.reflect.KClass
 
 
 abstract class BaseActivity<VB : ViewBinding, out BVM : BaseViewModel<BaseRepository>>(
-    viewModelType: KClass<out  BVM>
+    viewModelType: KClass<out BVM>
 ) : AppCompatActivity(){
 
 
@@ -52,10 +61,10 @@ abstract class BaseActivity<VB : ViewBinding, out BVM : BaseViewModel<BaseReposi
 
 
 
-    protected  inline  fun viewModel(action  : BVM.() -> Unit){
+    protected  inline  fun viewModel(action: BVM.() -> Unit){
         action(viewModel)
-        viewModel.showProgress.observe(this,observerProgressBar)
-        viewModel.errMsg?.observe(this,observerErrMsg)
+        viewModel.showProgress.observe(this, observerProgressBar)
+        viewModel.errMsg?.observe(this, observerErrMsg)
     }
 
 
@@ -65,7 +74,8 @@ abstract class BaseActivity<VB : ViewBinding, out BVM : BaseViewModel<BaseReposi
     fun hideProgress() = progressBar.hide()
 
 
-    protected inline fun viewBinding(action : VB.()-> Unit) = action(binding)
+    protected inline fun viewBinding(action: VB.() -> Unit) = action(binding)
+
 
 
 

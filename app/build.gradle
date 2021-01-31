@@ -113,5 +113,7 @@ dependencies {
     compileOnly kotlinGeneralDependencies.checker_qual
     implementation kotlinGeneralDependencies.annotation
     implementation kotlinGeneralDependencies.lottie
+    implementation 'ja.burhanrashid52:photoeditor:1.1.0'
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
 
 }

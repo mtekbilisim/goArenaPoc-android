@@ -1,17 +1,16 @@
 package com.mtek.goarenopoc.ui
 
 
-import android.os.Build
+import android.R.attr
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
 import com.mtek.goarenopoc.R
 import com.mtek.goarenopoc.base.BaseActivity
 import com.mtek.goarenopoc.databinding.ActivityMainBinding
@@ -84,6 +83,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, SplashViewModel>(SplashVi
             Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
         } else {
             super.onBackPressed()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        for (fragment in supportFragmentManager.fragments) {
+            fragment.onActivityResult(requestCode, resultCode,data)
         }
     }
 

@@ -2,6 +2,7 @@ package com.mtek.goarenopoc.ui.fragment.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import com.mtek.goarenopoc.R
 import com.mtek.goarenopoc.base.BaseAdapter
 import com.mtek.goarenopoc.base.BaseFragment
@@ -12,6 +13,7 @@ import com.mtek.goarenopoc.ui.adapter.homefeed.HomeFeedAdapter
 import com.mtek.goarenopoc.ui.adapter.homefeed.LayoutType
 import com.mtek.goarenopoc.utils.applyDivider
 import com.mtek.goarenopoc.utils.gone
+import com.mtek.goarenopoc.utils.setSafeOnClickListener
 
 
 class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>(HomeViewModel::class) {
@@ -21,6 +23,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>(HomeViewMod
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (requireContext() as MainActivity).showBottomNav()
+
+        binding.toolbar.btnBack.setSafeOnClickListener {
+
+           // findNavController().navigate(R.id.action_homeFragment_to_photoEditorFragment)
+        }
 
         val dataList = ArrayList<Data>()
         dataList.add(Data(LayoutType.Thumnail.id, "1. Hi! I am in View 1"))
