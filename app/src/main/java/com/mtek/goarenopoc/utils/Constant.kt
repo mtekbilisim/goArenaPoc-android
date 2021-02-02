@@ -19,6 +19,8 @@ object Constants {
     const val XPS = "password"
     const val SOCIAL_LOGIN = "social_login"
     const val ONBOARDING = "onBoarding"
+    const val MANAGER = "MANAGER"
+    const val EMPLOYEE = "EMPLOYEE"
 
     const val CAMERA_REQUEST = 52
     const val PICK_REQUEST = 53

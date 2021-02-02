@@ -17,7 +17,9 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.LargeValueFormatter
 import com.mtek.goarenopoc.base.BaseFragment
 import com.mtek.goarenopoc.data.network.response.DashboardResponseModel
+import com.mtek.goarenopoc.data.network.response.ExpectionResponseModel
 import com.mtek.goarenopoc.databinding.FragmentDashBoardBinding
+import com.mtek.goarenopoc.utils.Constants
 import com.mtek.goarenopoc.utils.flag_error
 import lecho.lib.hellocharts.gesture.ZoomType
 import lecho.lib.hellocharts.listener.ColumnChartOnValueSelectListener
@@ -36,10 +38,10 @@ class DashBoardFragment :
     private val observerMontlySales: Observer<DashboardResponseModel> = Observer {
         if (it != null) {
             Log.e("Donen Hedef Response", "${it.data}")
-            val data = it.data?.groupBy { productGroup ->
+            val dataSales = it.data?.groupBy { productGroup ->
                 productGroup.product_group
             }
-            for (i in data!!) {
+            for (i in dataSales!!) {
                 xAxisValues.add(i.key)
                 var amounts: Int = 0
                 for (j in i.value) {
@@ -51,9 +53,20 @@ class DashBoardFragment :
         }
     }
 
-    private val observerShops: Observer<DashboardResponseModel> = Observer {
+    private val observerTarget: Observer<ExpectionResponseModel> = Observer {
         if (it != null) {
-            Log.e("Donen Shop Response", "${it.data}")
+            if (it.data!![0].user?.employee_type == "MANAGER")viewModel.getMontlyTargetById(7) else viewModel.getMontlyTarget()
+            val dataTarget = it.data.groupBy { expection ->
+                expection.product_group
+            }
+            for (i in dataTarget) {
+                xAxisValues.add(i.key)
+                var quantity = 0
+                for (j in i.value) {
+                    quantity += j.quantity
+                }
+                yValueGroup1.add(BarEntry(1f, floatArrayOf(1.toFloat(), quantity.toFloat())))
+            }
         }
     }
 
@@ -62,17 +75,14 @@ class DashBoardFragment :
         super.onViewCreated(view, savedInstanceState)
         viewModel {
             getMontlySales()
-            getShop(3)
+            getMontlyTarget()
             monthlySales.observe(viewLifecycleOwner, observerMontlySales)
-            responseShop.observe(viewLifecycleOwner, observerShops)
+            responseTarget.observe(viewLifecycleOwner, observerTarget)
         }
 
     }
 
-    fun populateGraphData() {
-        yValueGroup1.add(BarEntry(1f, floatArrayOf(1.toFloat(), 10.toFloat())))
-        yValueGroup1.add(BarEntry(2f, floatArrayOf(2.toFloat(), 20.toFloat())))
-        yValueGroup1.add(BarEntry(3f, floatArrayOf(2.toFloat(), 30.toFloat())))
+    private fun populateGraphData() {
 
         val barDataSet1 = BarDataSet(yValueGroup1, "")
         barDataSet1.color = Color.BLUE

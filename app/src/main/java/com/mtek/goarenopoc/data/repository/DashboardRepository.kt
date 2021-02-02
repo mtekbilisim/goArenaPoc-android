@@ -5,5 +5,6 @@ import com.mtek.goarenopoc.data.network.api.ApiService
 
 class DashboardRepository(private val service: ApiService) : BaseRepository() {
     suspend fun getMonthlySales() = service.getMonthlySales()
-    suspend fun getShop(shopId: Int) = service.getShop(shopId)
+    suspend fun getExpectation() = service.getExpectation()
+    suspend fun getExpectationById(id:Int) = service.getExpectationById(id)
 }

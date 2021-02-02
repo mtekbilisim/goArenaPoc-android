@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.mtek.goarenopoc.base.BaseViewModel
 import com.mtek.goarenopoc.data.network.response.DashboardResponseModel
+import com.mtek.goarenopoc.data.network.response.ExpectionResponseModel
 import com.mtek.goarenopoc.data.repository.DashboardRepository
 
 class DashboardViewModel : BaseViewModel<DashboardRepository>(DashboardRepository::class) {
@@ -11,9 +12,9 @@ class DashboardViewModel : BaseViewModel<DashboardRepository>(DashboardRepositor
         MutableLiveData()
     val monthlySales: LiveData<DashboardResponseModel> = mutableMonthlySales
 
-    private val mutableShop: MutableLiveData<DashboardResponseModel> =
+    private val mutableTarget: MutableLiveData<ExpectionResponseModel> =
         MutableLiveData()
-    val responseShop: LiveData<DashboardResponseModel> = mutableShop
+    val responseTarget: LiveData<ExpectionResponseModel> = mutableTarget
 
     fun getMontlySales() {
         sendRequest {
@@ -25,11 +26,22 @@ class DashboardViewModel : BaseViewModel<DashboardRepository>(DashboardRepositor
         }
     }
 
-    fun getShop(shopid: Int) {
+    fun getMontlyTarget() {
         sendRequest {
-            repository.getShop(shopid).run {
-                mutableShop.postValue(this)
+            repository.getExpectation().run {
+                mutableTarget.postValue(this)
                 errMsg?.postValue(errMsg.value)
+                return@run
+            }
+        }
+    }
+
+    fun getMontlyTargetById(id:Int) {
+        sendRequest {
+            repository.getExpectationById(id).run {
+                mutableTarget.postValue(this)
+                errMsg?.postValue(errMsg.value)
+                return@run
             }
         }
     }
