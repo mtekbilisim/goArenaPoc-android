@@ -3,6 +3,7 @@ package com.mtek.goarenopoc.data.di
 
 
 import com.mtek.goarenopoc.data.network.api.ApiService
+import com.mtek.goarenopoc.data.repository.DashboardRepository
 import com.mtek.goarenopoc.data.repository.SplashRepository
 import org.koin.core.qualifier.TypeQualifier
 import org.koin.dsl.module
@@ -14,6 +15,7 @@ inline fun <reified T> createApiInstance(retrofit: Retrofit): T =
 val apiModule = module {
     //API
     factory { createApiInstance<ApiService>(get()) }
+    single(TypeQualifier(DashboardRepository::class)) { DashboardRepository(get()) }
 
    // single(TypeQualifier(SplashRepository::class)) { SplashRepository(get()) }
 
