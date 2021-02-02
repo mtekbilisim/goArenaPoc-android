@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mtek.goarenopoc.R
@@ -94,6 +95,8 @@ fun loadImage(
     val options: RequestOptions = RequestOptions()
         .placeholder(progressDrawable)
         .error(R.mipmap.ic_launcher_round)
+        .centerCrop()
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
     Glide.with(view.context)
         .setDefaultRequestOptions(options)
         .load(url)
@@ -107,6 +110,8 @@ fun loadImageCircle(
     val options: RequestOptions = RequestOptions()
         .placeholder(progressDrawable)
         .error(R.mipmap.ic_launcher_round)
+        .centerCrop()
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
     Glide.with(view.context)
         .setDefaultRequestOptions(options)
         .load(url)
@@ -120,6 +125,8 @@ fun loadImageLocal(
     val options: RequestOptions = RequestOptions()
         .placeholder(progressDrawable)
         .error(R.mipmap.ic_launcher_round)
+        .centerCrop()
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
     Glide.with(view.context)
         .setDefaultRequestOptions(options)
         .load(File(uri?.path))

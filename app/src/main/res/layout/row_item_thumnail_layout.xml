@@ -9,6 +9,7 @@
     android:layout_height="@dimen/_200sdp">
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@color/color_yellow"/>

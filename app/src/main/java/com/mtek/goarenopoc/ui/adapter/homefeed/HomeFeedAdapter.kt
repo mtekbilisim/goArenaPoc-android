@@ -4,10 +4,12 @@ package com.mtek.goarenopoc.ui.adapter.homefeed
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mtek.goarenopoc.data.model.Data
+import com.mtek.goarenopoc.data.model.FeedModel
+import com.mtek.goarenopoc.data.network.response.FeedResponseModel
 
 class HomeFeedAdapter(
-    private var items: ArrayList<Data>,
-    private val onItemClickListener: ( newsModel: Data)->Unit
+    private var items: ArrayList<FeedModel>,
+    private val onItemClickListener: ( newsModel: FeedModel)->Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
 
@@ -30,7 +32,6 @@ class HomeFeedAdapter(
                 (holder as HolderThumbnail).bind(items[position],onItemClickListener)
             }
 
-
             else -> {
                 (holder as HolderOnlyText).bind(items[position], onItemClickListener)
             }
@@ -39,10 +40,21 @@ class HomeFeedAdapter(
 
     override fun getItemCount(): Int = items.size
 
-
+    fun setList(newlist: ArrayList<FeedModel>?) {
+        if (newlist != null) {
+            items = newlist
+        }
+        notifyDataSetChanged()
+    }
 
     override fun getItemViewType(position: Int): Int {
-        return position % 2 * 2
+        return if (items[position].postType == "TEXT"){
+            1
+        }else if(items[position].postType == "VIDEO"){
+            0
+        }else{
+            0
+        }
     }
 
 }
