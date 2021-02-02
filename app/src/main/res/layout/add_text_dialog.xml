@@ -15,12 +15,11 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_margin="20dp"
-        android:background="@drawable/rounded_border_text_view"
-        android:padding="10dp"
-        android:text="Done"
+        android:padding="@dimen/_10ssp"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        app:drawableEndCompat="@drawable/ic_check" />
 
     <EditText
         android:id="@+id/add_text_edit_text"

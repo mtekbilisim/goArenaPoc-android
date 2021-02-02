@@ -19,6 +19,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.FileProvider
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.ChangeBounds
@@ -191,24 +192,24 @@ class PhotoEditorFragment :
 
     }
 
-    private fun shareImage() {
-        if (mSaveImageUri == null) {
-            requireActivity().extToast(getString(R.string.msg_save_image_to_share))
-            return
-        }
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.type = "image/*"
-        intent.putExtra(Intent.EXTRA_STREAM, buildFileProviderUri(mSaveImageUri!!))
-        startActivity(Intent.createChooser(intent, getString(R.string.msg_share_image)))
-    }
-
-    private fun buildFileProviderUri(uri: Uri): Uri? {
-        return FileProvider.getUriForFile(
-            requireContext(),
-            FILE_PROVIDER_AUTHORITY,
-            File(uri.path)
-        )
-    }
+//    private fun shareImage() {
+//        if (mSaveImageUri == null) {
+//            requireActivity().extToast(getString(R.string.msg_save_image_to_share))
+//            return
+//        }
+//        val intent = Intent(Intent.ACTION_SEND)
+//        intent.type = "image/*"
+//        intent.putExtra(Intent.EXTRA_STREAM, buildFileProviderUri(mSaveImageUri!!))
+//        startActivity(Intent.createChooser(intent, getString(R.string.msg_share_image)))
+//    }
+//
+//    private fun buildFileProviderUri(uri: Uri): Uri? {
+//        return FileProvider.getUriForFile(
+//            requireContext(),
+//            FILE_PROVIDER_AUTHORITY,
+//            File(uri.path)
+//        )
+//    }
 
 
     @SuppressLint("MissingPermission")
@@ -233,8 +234,10 @@ class PhotoEditorFragment :
                         mSaveImageUri = Uri.fromFile(File(imagePath))
                         binding.photoEditorView.source.setImageURI(mSaveImageUri)
                         val bundle = Bundle()
-                        bundle.putString("SelectedImageUri", mSaveImageUri.toString())
-                        Constants.filterUriStr = mSaveImageUri.toString()
+                        bundle.putString(Constants.SELECTED_URI, mSaveImageUri.toString())
+                      //  Constants.filterUriStr = mSaveImageUri.toString()
+                       val model = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+                        model.setFilteredImage(mSaveImageUri.toString())
                         findNavController().popBackStack()
                     }
 

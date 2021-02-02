@@ -12,21 +12,24 @@
         android:layout_width="match_parent"
         app:cardCornerRadius="@dimen/_12ssp"
         app:cardUseCompatPadding="true"
+        android:background="@color/black"
         app:cardElevation="@dimen/_1ssp"
         app:cardPreventCornerOverlap="false">
 
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageView"
             android:layout_height="match_parent"
+            android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:src="@color/color_yellow" />
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnRemove"
             android:padding="@dimen/_4ssp"
             android:layout_gravity="end"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            app:tint="@color/colorPrimary"
-            android:src="@drawable/ic_close" />
+            android:layout_height="@dimen/_24ssp"
+            android:layout_width="@dimen/_24ssp"
+            android:src="@drawable/ic_post_removed" />
 
 
     </androidx.cardview.widget.CardView>

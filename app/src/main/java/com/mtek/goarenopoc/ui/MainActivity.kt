@@ -72,20 +72,26 @@ class MainActivity : BaseActivity<ActivityMainBinding, SplashViewModel>(SplashVi
     }
 
     override fun onBackPressed() {
-        val start = Navigation.findNavController(this, R.id.nav_host_container).currentDestination!!.id
-        if (start == R.id.homeFragment) {
-            if (doubleBackToExitPressedOnce) {
+        val start = Navigation.findNavController(this, R.id.nav_host_container).currentDestination?.id
+        when (start) {
+            R.id.homeFragment -> {
+                if (doubleBackToExitPressedOnce) {
 
+                    finishAfterTransition()
+                    return
+                }
+                doubleBackToExitPressedOnce = true
+                Toast.makeText(this@MainActivity, "Uygulamadan çıkmak için 2 kere geri tuşuna basın", Toast.LENGTH_SHORT)
+                    .show()
+                Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
+            }
+            R.id.loginFragment -> {
                 finishAfterTransition()
                 return
             }
-            doubleBackToExitPressedOnce = true
-            Toast.makeText(this@MainActivity, "Press back again to exits", Toast.LENGTH_SHORT)
-                .show()
-            Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
-        } else {
-          //  tellFragments();
-            super.onBackPressed()
+            else -> {
+                super.onBackPressed()
+            }
         }
     }
 
@@ -96,12 +102,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, SplashViewModel>(SplashVi
         }
     }
 
-//    private fun tellFragments() {
-//        val fragments: List<Fragment> = supportFragmentManager.fragments
-//        for (f in fragments) {
-//            if (f != null && f is BaseFragment<*, *>) f.onBackPressed()
-//        }
-//    }
 
 
 }

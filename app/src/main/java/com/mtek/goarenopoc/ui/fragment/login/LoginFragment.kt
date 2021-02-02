@@ -20,7 +20,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding,SplashViewModel>(SplashV
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        findNavController().popBackStackAllInstances(R.id.splashFragment,true)
 
         binding.btnLogin.setSafeOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_homeFragment)

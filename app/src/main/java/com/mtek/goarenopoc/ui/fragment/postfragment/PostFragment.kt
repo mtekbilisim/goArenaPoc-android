@@ -3,31 +3,32 @@ package com.mtek.goarenopoc.ui.fragment.postfragment
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toFile
 import androidx.core.net.toUri
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.mtek.goarenopoc.R
 import com.mtek.goarenopoc.base.BaseAdapter
 import com.mtek.goarenopoc.base.BaseFragment
 import com.mtek.goarenopoc.databinding.FragmentPostBinding
 import com.mtek.goarenopoc.ui.MainActivity
+import com.mtek.goarenopoc.ui.fragment.SharedViewModel
 import com.mtek.goarenopoc.ui.fragment.splash.SplashViewModel
-import com.mtek.goarenopoc.ui.fragment.splash.TestViewModel
-import com.mtek.goarenopoc.utils.Constants
-import com.mtek.goarenopoc.utils.emptyString
-import com.mtek.goarenopoc.utils.setSafeOnClickListener
+import com.mtek.goarenopoc.utils.*
 import pl.aprilapps.easyphotopicker.*
-import java.io.File
-import java.io.InputStream
 
 
 class PostFragment : BaseFragment<FragmentPostBinding, SplashViewModel>(SplashViewModel::class) {
@@ -43,13 +44,20 @@ class PostFragment : BaseFragment<FragmentPostBinding, SplashViewModel>(SplashVi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (Constants.filterUriStr != "") {
-            val uri = Uri.parse(Constants.filterUriStr)
-            val mediaFile = MediaFile(uri,uri.toFile())
-            photos?.add(mediaFile)
-            baseAdapter?.setList(photos)
-            Constants.filterUriStr = emptyString()
-        }
+        val model = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+        model.getPostValue().observe(viewLifecycleOwner, Observer {
+            binding.etContent.setText(it)
+        })
+
+        model.getFilteredImage().observe(viewLifecycleOwner,Observer {
+            if (it != "") {
+                val uri = Uri.parse(it)
+                val mediaFile = MediaFile(uri,uri.toFile())
+                photos?.add(mediaFile)
+                baseAdapter?.setList(photos)
+                model.cleanDataImage()
+            }
+        })
 
         edtContentControl()
         clickFun()
@@ -62,6 +70,14 @@ class PostFragment : BaseFragment<FragmentPostBinding, SplashViewModel>(SplashVi
             requireContext(), R.layout.row_item_post_thumnail_layout,
             photos
         ) { v, item, position ->
+            val remove = v?.findViewById(R.id.btnRemove) as AppCompatImageView
+            val imageView = v.findViewById(R.id.imageView) as AppCompatImageView
+
+            remove.setSafeOnClickListener {
+                baseAdapter?.removeAt(position)
+            }
+
+            loadImageLocal(imageView,item.file.toUri(), getProgressDrawable(imageView.context))
 
         }
         binding.recyclerView.adapter = baseAdapter
@@ -211,8 +227,10 @@ class PostFragment : BaseFragment<FragmentPostBinding, SplashViewModel>(SplashVi
 
                     val hereUrl: Uri = imageFiles[0].file.toUri()
                     val bundle = Bundle()
-                    bundle.putString("SelectedImageUri", hereUrl.toString())
+                    bundle.putString(Constants.SELECTED_URI, hereUrl.toString())
                     if (imageFiles.size == 1) {
+                        val model = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+                        model.setPostValue(binding.etContent.text.toString())
                         findNavController().navigate(
                             R.id.action_postFragment_to_photoEditorFragment2,
                             bundle

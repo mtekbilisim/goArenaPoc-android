@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
@@ -38,6 +39,7 @@ import com.mtek.goarenopoc.base.Errors
 import com.mtek.goarenopoc.utils.manager.LocalDataManager
 import okhttp3.RequestBody
 import okio.Buffer
+import java.io.File
 import java.io.IOException
 import java.io.Serializable
 
@@ -82,6 +84,7 @@ fun EditText.getLength() : String{
     return this.length().toString()
 }
 
+
 fun loadImage(
     view: ImageView,
     url: String?,
@@ -93,6 +96,19 @@ fun loadImage(
     Glide.with(view.context)
         .setDefaultRequestOptions(options)
         .load(url)
+        .into(view)
+}
+fun loadImageLocal(
+    view: ImageView,
+    uri: Uri?,
+    progressDrawable: CircularProgressDrawable?
+) {
+    val options: RequestOptions = RequestOptions()
+        .placeholder(progressDrawable)
+        .error(R.mipmap.ic_launcher_round)
+    Glide.with(view.context)
+        .setDefaultRequestOptions(options)
+        .load(File(uri?.path))
         .into(view)
 }
 
@@ -191,11 +207,6 @@ fun <T : View> T.isBackButton(context: Context) {
     }
 }
 
-/**
- * Manages the various graphs needed for a [BottomNavigationView].
- *
- * This sample is a workaround until the Navigation Component supports multiple back stacks.
- */
 fun BottomNavigationView.setupWithNavController(
     navGraphIds: List<Int>,
     fragmentManager: FragmentManager,
@@ -267,10 +278,10 @@ fun BottomNavigationView.setupWithNavController(
                     // to it, creating the fixed started destination.
                     fragmentManager.beginTransaction()
                         .setCustomAnimations(
-                            R.anim.nav_default_enter_anim,
-                            R.anim.nav_default_exit_anim,
-                            R.anim.nav_default_pop_enter_anim,
-                            R.anim.nav_default_pop_exit_anim)
+                            R.anim.from_right,
+                            R.anim.to_left,
+                            R.anim.from_left,
+                            R.anim.to_right)
                         .attach(selectedFragment)
                         .setPrimaryNavigationFragment(selectedFragment)
                         .apply {

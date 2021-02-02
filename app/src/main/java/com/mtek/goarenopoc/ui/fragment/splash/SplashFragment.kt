@@ -10,6 +10,7 @@ import com.mtek.goarenopoc.R
 import com.mtek.goarenopoc.base.BaseFragment
 import com.mtek.goarenopoc.databinding.FragmentSplashBinding
 import com.mtek.goarenopoc.ui.MainActivity
+import com.mtek.goarenopoc.utils.popBackStackAllInstances
 
 
 class SplashFragment : BaseFragment<FragmentSplashBinding,SplashViewModel>(SplashViewModel::class) {
@@ -31,8 +32,8 @@ class SplashFragment : BaseFragment<FragmentSplashBinding,SplashViewModel>(Splas
            }
 
            override fun onFinish() {
+             findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
                findNavController().graph.startDestination = R.id.loginFragment
-               findNavController().navigate(R.id.loginFragment)
            }
        }
        timer.start()
