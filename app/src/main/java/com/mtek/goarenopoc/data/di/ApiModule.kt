@@ -1,9 +1,9 @@
 package com.mtek.goarenopoc.data.di
 
 
-
 import com.mtek.goarenopoc.data.network.api.ApiService
 import com.mtek.goarenopoc.data.repository.HomeRepository
+import com.mtek.goarenopoc.data.repository.PostRepository
 import com.mtek.goarenopoc.data.repository.SplashRepository
 import org.koin.core.qualifier.TypeQualifier
 import org.koin.dsl.module
@@ -17,5 +17,6 @@ val apiModule = module {
     factory { createApiInstance<ApiService>(get()) }
 
     single(TypeQualifier(HomeRepository::class)) { HomeRepository(get()) }
+    single(TypeQualifier(PostRepository::class)) { PostRepository(get()) }
 
 }

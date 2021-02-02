@@ -93,7 +93,7 @@ class CropFragment : BaseFragment<FragmentCropBinding, SplashViewModel>(SplashVi
                 val bundle = Bundle()
                 bundle.putString(Constants.SELECTED_URI, outputUri.toString())
                 findNavController().navigate(
-                    R.id.action_cropFragment_to_photoEditorFragment2,
+                    R.id.action_cropFragment2_to_photoEditorFragment,
                     bundle
                 )
             }

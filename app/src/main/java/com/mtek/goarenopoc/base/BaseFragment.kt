@@ -14,6 +14,8 @@ import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
 import com.mtek.goarenopoc.R
 import com.mtek.goarenopoc.module.progress.ProgressBar
+import com.mtek.goarenopoc.ui.MainActivity
+import com.mtek.goarenopoc.utils.errorControl
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.reflect.KClass
 
@@ -40,9 +42,12 @@ abstract class BaseFragment<VB : ViewBinding, out BVM : BaseViewModel<BaseReposi
     }
 
     protected val observerErrMsg: Observer<BaseErrorModel> = Observer {
-//        if (it != ErrorType.SUCCESS) {
-//            Utils.showAlert(requireContext(), msg = getString(ErrorManager.checkRuleSetMessage(it)))
-//        }
+        if (it != null){
+            it?.let {
+                (requireContext() as MainActivity).errorControl(it)
+            }
+        }
+
     }
 
     override fun onCreateView(

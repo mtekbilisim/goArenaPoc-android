@@ -40,5 +40,73 @@
         android:id="@+id/homeFragment"
         android:name="com.mtek.goarenopoc.ui.fragment.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_postFragment2"
+            app:destination="@id/postFragment2"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            app:popUpTo="@id/homeFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/postFragment2"
+        android:name="com.mtek.goarenopoc.ui.fragment.postfragment.PostFragment"
+        android:label="fragment_post"
+        tools:layout="@layout/fragment_post" >
+        <action
+            android:id="@+id/action_postFragment2_to_photoEditorFragment"
+            app:destination="@id/photoEditorFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            app:popUpTo="@id/postFragment2"/>
+        <action
+            android:id="@+id/action_postFragment2_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            app:popUpTo="@id/postFragment2"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/photoEditorFragment"
+        android:name="com.mtek.goarenopoc.ui.fragment.PhotoEditorFragment"
+        android:label="PhotoEditorFragment" >
+        <action
+            android:id="@+id/action_photoEditorFragment_to_cropFragment2"
+            app:destination="@id/cropFragment2"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            app:popUpTo="@id/photoEditorFragment"/>
+        <action
+            android:id="@+id/action_photoEditorFragment_to_postFragment2"
+            app:destination="@id/postFragment2"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            app:popUpTo="@id/photoEditorFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/cropFragment2"
+        android:name="com.mtek.goarenopoc.module.photofilter.core.CropFragment"
+        android:label="CropFragment" >
+        <action
+            android:id="@+id/action_cropFragment2_to_photoEditorFragment"
+            app:destination="@id/photoEditorFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            app:popUpTo="@id/cropFragment2"
+            app:popUpToInclusive="true"/>
+    </fragment>
 </navigation>

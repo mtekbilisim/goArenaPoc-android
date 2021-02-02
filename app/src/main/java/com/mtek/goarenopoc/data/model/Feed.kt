@@ -27,6 +27,8 @@ data class FeedPlainModel(
     val status : String?
 )
 
+
+
 data class LikeModel(
     val id : Int?,
     val postDate : String?,

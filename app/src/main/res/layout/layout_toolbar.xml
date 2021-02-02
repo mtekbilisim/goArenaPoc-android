@@ -4,16 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutToolbar"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
-    android:background="@color/colorPrimary"
-    app:cardCornerRadius="0dp">
+    android:layout_height="60dp"
+    android:background="@color/colorPrimary">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="horizontal"
         android:layout_height="match_parent"
-        android:background="@android:color/transparent">
-
+        android:background="@android:color/transparent"
+        android:orientation="horizontal">
 
 
         <FrameLayout
@@ -23,16 +21,24 @@
             <ImageView
                 android:id="@+id/btnBack"
                 android:layout_width="wrap_content"
-                android:layout_gravity="end|center"
                 android:layout_height="match_parent"
+                android:layout_gravity="end|center"
                 android:padding="@dimen/_12ssp"
                 android:src="@drawable/ic_search"
                 app:tint="@color/white" />
 
             <ImageView
-                android:layout_width="@dimen/_50ssp"
-                android:layout_height="@dimen/_50ssp"
-                android:padding="@dimen/_8ssp"
+                android:id="@+id/btnAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start|center"
+                android:src="@drawable/ic_baseline_add_24"
+                android:padding="@dimen/_12ssp"
+                app:tint="@color/white" />
+
+            <ImageView
+                android:layout_width="@dimen/_40ssp"
+                android:layout_height="@dimen/_40ssp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_logo" />
 

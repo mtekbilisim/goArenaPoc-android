@@ -238,7 +238,7 @@ class PhotoEditorFragment :
                       //  Constants.filterUriStr = mSaveImageUri.toString()
                        val model = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
                         model.setFilteredImage(mSaveImageUri.toString())
-                        findNavController().popBackStack()
+                        findNavController().navigate(R.id.action_photoEditorFragment_to_postFragment2)
                     }
 
                     override fun onFailure(exception: Exception) {
@@ -372,7 +372,7 @@ class PhotoEditorFragment :
                 val bundle = Bundle()
                 bundle.putString("SelectedImageUri", mSaveImageUri.toString())
                 findNavController().navigate(
-                    R.id.action_photoEditorFragment2_to_cropFragment,
+                    R.id.action_photoEditorFragment_to_cropFragment2,
                     bundle
                 )
 

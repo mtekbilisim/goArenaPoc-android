@@ -45,7 +45,7 @@ abstract class BaseActivity<VB : ViewBinding, out BVM : BaseViewModel<BaseReposi
     }
 
     protected  val observerErrMsg : Observer<BaseErrorModel> = Observer {
-        it?.code?.let { code -> it?.error?.let { message -> errorControl(code, message) } } }
+         }
 
     lateinit var binding: VB
     abstract fun getViewBinding(): VB

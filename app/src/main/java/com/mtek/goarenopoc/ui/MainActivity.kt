@@ -4,6 +4,7 @@ package com.mtek.goarenopoc.ui
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mtek.goarenopoc.R
 import com.mtek.goarenopoc.base.BaseActivity
 import com.mtek.goarenopoc.base.BaseFragment
@@ -36,6 +38,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, SplashViewModel>(SplashVi
 
     }
 
+     fun selectHome(){
+        binding.bottomAppBar.selectedItemId = R.id.homeFragment
+    }
+
 
     private fun setupBottomNavigationBar() {
 
@@ -50,7 +56,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, SplashViewModel>(SplashVi
             "Reselect blocked."
         }
 
-        val navGraphIds = listOf(R.navigation.home, R.navigation.add, R.navigation.dashboard)
+        val navGraphIds = listOf(R.navigation.home, R.navigation.dashboard)
         val controller = binding?.bottomAppBar?.setupWithNavController(
             navGraphIds = navGraphIds,
             fragmentManager = supportFragmentManager,
@@ -58,6 +64,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, SplashViewModel>(SplashVi
             intent = intent
         )
         currentNavController = controller
+
+    }
+
+    fun asd(){
 
     }
 
@@ -72,8 +82,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, SplashViewModel>(SplashVi
     }
 
     override fun onBackPressed() {
-        val start = Navigation.findNavController(this, R.id.nav_host_container).currentDestination?.id
-        when (start) {
+        when (Navigation.findNavController(this, R.id.nav_host_container).currentDestination?.id) {
             R.id.homeFragment -> {
                 if (doubleBackToExitPressedOnce) {
 

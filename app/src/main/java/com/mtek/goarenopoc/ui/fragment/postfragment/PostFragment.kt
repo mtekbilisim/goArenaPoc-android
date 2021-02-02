@@ -8,11 +8,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.TextView
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.addCallback
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toFile
@@ -23,49 +19,104 @@ import androidx.navigation.fragment.findNavController
 import com.mtek.goarenopoc.R
 import com.mtek.goarenopoc.base.BaseAdapter
 import com.mtek.goarenopoc.base.BaseFragment
+import com.mtek.goarenopoc.data.model.FeedPlainModel
+import com.mtek.goarenopoc.data.model.FileModel
+import com.mtek.goarenopoc.data.model.MediaModel
+import com.mtek.goarenopoc.data.model.UploadRequestBody
+import com.mtek.goarenopoc.data.network.response.FileResponseModel
+import com.mtek.goarenopoc.data.network.response.MediaModelResponseModel
+import com.mtek.goarenopoc.data.network.response.PostResponseModel
 import com.mtek.goarenopoc.databinding.FragmentPostBinding
 import com.mtek.goarenopoc.ui.MainActivity
 import com.mtek.goarenopoc.ui.fragment.SharedViewModel
-import com.mtek.goarenopoc.ui.fragment.splash.SplashViewModel
 import com.mtek.goarenopoc.utils.*
+import okhttp3.MultipartBody
 import pl.aprilapps.easyphotopicker.*
 
 
-class PostFragment : BaseFragment<FragmentPostBinding, SplashViewModel>(SplashViewModel::class) {
+class PostFragment : BaseFragment<FragmentPostBinding, PostViewModel>(PostViewModel::class) {
 
     override fun getViewBinding() = FragmentPostBinding.inflate(layoutInflater)
 
+    private val observerFile: Observer<FileResponseModel> = Observer {
+        if (it != null) {
+            fileResponseList = it.data as ArrayList<FileModel>
+            sendPost()
+        }
+
+    }
+
+    private val observerRequest: Observer<PostResponseModel> = Observer {
+        if (it != null) {
+            flag_error("${it.toString()}")
+            val sendList = ArrayList<MediaModel>()
+            for (i in fileResponseList){
+                sendList.add(MediaModel(0,i.fileDownloadUri,i.fileType,it.data?.id,it.data?.userId))
+            }
+            viewModel.sendCompletedFeed(it.data?.id.toString(),sendList)
+        }
+
+    }
+
+    private val observerCompleted: Observer<MediaModelResponseModel> = Observer {
+        if (it != null) {
+            flag_error("${it.toString()}")
+
+            cleanForm()
+            sharedViewModel.setFilteredImage("")
+            sharedViewModel.setPostValue("")
+
+            progressBar.hide()
+            findNavController().navigate(R.id.action_postFragment2_to_homeFragment)
+
+
+        }
+
+    }
+
+
+    private var fileResponseList : ArrayList<FileModel> = arrayListOf()
     private var easyImage: EasyImage? = null
     private var returnedPhotos: Array<MediaFile>? = null
+    private var mediaType: ArrayList<MultipartBody.Part> = arrayListOf()
     private var photos: ArrayList<MediaFile>? = arrayListOf()
     private var baseAdapter: BaseAdapter<MediaFile>? = null
+    lateinit var sharedViewModel: SharedViewModel
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val model = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
-        model.getPostValue().observe(viewLifecycleOwner, Observer {
-            binding.etContent.setText(it)
-        })
-
-        model.getFilteredImage().observe(viewLifecycleOwner,Observer {
-            if (it != "") {
-                val uri = Uri.parse(it)
-                val mediaFile = MediaFile(uri,uri.toFile())
-                photos?.add(mediaFile)
-                baseAdapter?.setList(photos)
-                model.cleanDataImage()
-            }
-        })
-
+        viewModel {
+            responseFile.observe(viewLifecycleOwner, observerFile)
+            responseFeed.observe(viewLifecycleOwner, observerRequest)
+            responseCompleted.observe(viewLifecycleOwner, observerCompleted)
+        }
+        updateUI()
         edtContentControl()
         clickFun()
         setAdapter()
 
     }
 
-    private fun setAdapter(){
+    private fun updateUI() {
+        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+        sharedViewModel.getPostValue().observe(viewLifecycleOwner, Observer {
+            binding.etContent.setText(it)
+        })
+
+        sharedViewModel.getFilteredImage().observe(viewLifecycleOwner, Observer {
+            if (it != "") {
+                val uri = Uri.parse(it)
+                val mediaFile = MediaFile(uri, uri.toFile())
+                photos?.add(mediaFile)
+                baseAdapter?.setList(photos)
+                sharedViewModel.cleanDataImage()
+            }
+        })
+
+    }
+
+    private fun setAdapter() {
         baseAdapter = BaseAdapter(
             requireContext(), R.layout.row_item_post_thumnail_layout,
             photos
@@ -77,28 +128,66 @@ class PostFragment : BaseFragment<FragmentPostBinding, SplashViewModel>(SplashVi
                 baseAdapter?.removeAt(position)
             }
 
-            loadImageLocal(imageView,item.file.toUri(), getProgressDrawable(imageView.context))
+            loadImageLocal(imageView, item.file.toUri(), getProgressDrawable(imageView.context))
 
         }
         binding.recyclerView.adapter = baseAdapter
 
     }
 
-    private fun clickFun(){
-        binding.btnCancel.setSafeOnClickListener {
-            (requireActivity() as MainActivity).onBackPressed()
+    private fun sendPost() {
+
+        val type = if (!returnedPhotos.isNullOrEmpty()) {
+            "IMAGE"
+        } else {
+            "TEXT"
+        }
+        viewModel.senRequestFeed(
+            FeedPlainModel(
+                null,
+                binding.etContent.text.toString(),
+                type,
+                0,
+                currentDay,
+                10,
+                "DRAFT"
+            )
+        )
+    }
+
+    private fun clickFun() {
+        binding.btnCancel.setSafeOnClickListener { findNavController().popBackStack() }
+
+        init()
+
+        binding.imgCamera.setSafeOnClickListener { openCamera() }
+
+        binding.btnSendPost.setSafeOnClickListener {
+            if (!photos.isNullOrEmpty()){
+                for (i in photos!!) {
+                    val body = UploadRequestBody(i.file, "image")
+                    mediaType.add(
+                        MultipartBody.Part.createFormData(
+                            "files",
+                            i.file.name,
+                            body
+                        )
+                    )
+                }
+                viewModel.sendFeedImageUpload(mediaType)
+                return@setSafeOnClickListener
+            }
+            if (binding.etContent.text.toString().length < 6 ){
+                requireContext().extToast("Lütfen gönderi yazısı girin")
+                return@setSafeOnClickListener
+            }
+
+            sendPost()
+
         }
 
-        if (binding.etContent.isFocusable) {
-            (requireActivity() as MainActivity).hideBottomNav()
-        }
-        init()
-        binding.imgCamera.setSafeOnClickListener {
-            openCamera()
-        }
         binding.imgGallery.setSafeOnClickListener {
-            val necessaryPermissions =
-                arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            val necessaryPermissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             if (arePermissionsGranted(necessaryPermissions)) {
                 easyImage!!.openGallery(this)
             } else {
@@ -111,8 +200,7 @@ class PostFragment : BaseFragment<FragmentPostBinding, SplashViewModel>(SplashVi
     }
 
 
-
-    private fun edtContentControl(){
+    private fun edtContentControl() {
         binding.etContent.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
@@ -146,7 +234,7 @@ class PostFragment : BaseFragment<FragmentPostBinding, SplashViewModel>(SplashVi
 
     }
 
-   private fun openCamera() {
+    private fun openCamera() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.CAMERA
@@ -209,7 +297,6 @@ class PostFragment : BaseFragment<FragmentPostBinding, SplashViewModel>(SplashVi
     private fun onPhotosReturned(returnedPhotos: Array<MediaFile>) {
         photos!!.addAll(returnedPhotos)
         baseAdapter?.setList(photos)
-        binding.recyclerView.scrollToPosition(photos!!.size - 1)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -228,11 +315,13 @@ class PostFragment : BaseFragment<FragmentPostBinding, SplashViewModel>(SplashVi
                     val hereUrl: Uri = imageFiles[0].file.toUri()
                     val bundle = Bundle()
                     bundle.putString(Constants.SELECTED_URI, hereUrl.toString())
+
                     if (imageFiles.size == 1) {
-                        val model = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+                        val model =
+                            ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
                         model.setPostValue(binding.etContent.text.toString())
                         findNavController().navigate(
-                            R.id.action_postFragment_to_photoEditorFragment2,
+                            R.id.action_postFragment2_to_photoEditorFragment,
                             bundle
                         )
                         return
@@ -255,8 +344,11 @@ class PostFragment : BaseFragment<FragmentPostBinding, SplashViewModel>(SplashVi
             })
     }
 
-
-
+    private fun cleanForm(){
+        binding.etContent.setText("")
+        photos?.clear()
+        baseAdapter?.setList(photos)
+    }
 
 
 }

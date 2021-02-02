@@ -44,42 +44,42 @@ abstract class BaseViewModel<out REPO : BaseRepository>(
             } catch (exception: Exception) {
                 when (exception) {
                     is TimeoutException -> {
-                        errMsg?.postValue(BaseErrorModel(404, Errors(0, "timeException")))
+                        errMsg?.postValue(BaseErrorModel(404, "timeException"))
                     }
                     is IllegalStateException -> {
-                        errMsg?.postValue(BaseErrorModel(404, Errors(0, "${(exception).message}")))
+                        errMsg?.postValue(BaseErrorModel(404,  "${(exception).message}"))
                     }
                     is JsonSyntaxException -> {
-                        errMsg?.postValue(BaseErrorModel(404, Errors(0, "${(exception).message}")))
+                        errMsg?.postValue(BaseErrorModel(404, "${(exception).message}"))
                     }
                     is UnknownHostException -> {
-                        errMsg?.postValue(BaseErrorModel(101, Errors(0, "Internet bağlantısı bulunamadı. Lütfen cihazınızın internete bağlı olduğundan emin olun")))
+                        errMsg?.postValue(BaseErrorModel(101,  "Internet bağlantısı bulunamadı. Lütfen cihazınızın internete bağlı olduğundan emin olun"))
                     }
                     is InterruptedIOException -> {
-                        errMsg?.postValue(BaseErrorModel(404, Errors(0, "${exception.message}")))
+                        errMsg?.postValue(BaseErrorModel(404,"${exception.message}"))
 
                     }
                     is SocketTimeoutException -> {
-                        errMsg?.postValue(BaseErrorModel(404, Errors(0, "${exception.message}")))
+                        errMsg?.postValue(BaseErrorModel(404,  "${exception.message}"))
 
                     }
                     is IOException -> {
-                        errMsg?.postValue(BaseErrorModel(404, Errors(0, "${exception.message}")))
+                        errMsg?.postValue(BaseErrorModel(404,  "${exception.message}"))
 
                     }
                     is KotlinNullPointerException -> {
 
                     }
                     is MalformedJsonException -> {
-                        errMsg?.postValue(BaseErrorModel(404, Errors(0, "${exception.message}")))
+                        errMsg?.postValue(BaseErrorModel(404,  "${exception.message}"))
 
                     }
                     else -> {
-                        var error =
+                        val error =
 
                             GsonBuilder().setPrettyPrinting().create()
                                 .fromJson((exception as HttpException).response()?.errorBody()?.charStream(), BaseErrorModel::class.java)
-                        error.code = exception.code()
+
                         errMsg?.postValue(error)
                     }
                 }

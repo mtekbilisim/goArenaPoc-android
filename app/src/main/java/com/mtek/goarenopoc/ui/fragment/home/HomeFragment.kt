@@ -59,6 +59,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(HomeViewMo
 
         }
 
+        binding.toolbar.btnAdd.setSafeOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_postFragment2)
+        }
+
     }
 
     private fun storyAdapter() {

@@ -3,8 +3,12 @@ package com.mtek.goarenopoc.base
 import com.google.gson.annotations.SerializedName
 
 data class BaseErrorModel(
-    var code: Int?=null,
-    var error: Errors? = null
+    var timestamp: Int? = null,
+    var path: String? = null,
+    var status: Int? = null,
+    var error: String? = null,
+    var message: Int? = null,
+    var requestId : String?=null
 ) {
 
     override fun toString(): String {

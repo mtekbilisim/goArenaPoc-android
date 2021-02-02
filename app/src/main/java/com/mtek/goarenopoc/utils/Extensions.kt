@@ -36,6 +36,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mtek.goarenopoc.R
 import com.mtek.goarenopoc.base.BaseActivity
+import com.mtek.goarenopoc.base.BaseErrorModel
 import com.mtek.goarenopoc.base.Errors
 import com.mtek.goarenopoc.utils.manager.LocalDataManager
 import de.hdodenhof.circleimageview.CircleImageView
@@ -44,6 +45,8 @@ import okio.Buffer
 import java.io.File
 import java.io.IOException
 import java.io.Serializable
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 fun <T : RequestBody?> T.bodyToString(): String {
@@ -141,6 +144,17 @@ fun getProgressDrawable(context: Context?): CircularProgressDrawable {
     return progressDrawable
 }
 
+
+val currentDay: String
+    get() {
+        val dateFormat = SimpleDateFormat(
+            "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US
+        )
+        dateFormat.timeZone = TimeZone.getTimeZone("GMT+3")
+        return dateFormat.format(Date())
+    }
+
+
 fun Any.flag_error(message: String, tag:String = "flag_error") = Log.e(tag,message)
 
 fun Any.flag_debug(message: String, tag:String="flag_debug") = Log.e(tag,message)
@@ -218,8 +232,8 @@ inline fun <reified T : Activity> Context.openActivity(noinline extra: Intent.()
 }
 
 
-fun BaseActivity<*, *>.errorControl(errorCode: Int, errorModel: Errors) {
-
+fun BaseActivity<*, *>.errorControl( errorModel: BaseErrorModel) {
+    extToast(errorModel.error.toString())
 }
 
 fun <T : View> T.isBackButton(context: Context) {
