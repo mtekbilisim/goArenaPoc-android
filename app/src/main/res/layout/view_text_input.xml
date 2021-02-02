@@ -51,7 +51,7 @@
                     android:layout_marginEnd="@dimen/_18ssp"
                     android:imeOptions="actionDone"
                     android:inputType="text"
-                    android:layout_marginTop="@dimen/_4ssp"
+                    android:layout_marginTop="@dimen/_2ssp"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     app:met_hideUnderline="true"

@@ -73,14 +73,16 @@ public class FilterViewAdapter extends RecyclerView.Adapter<FilterViewAdapter.Vi
 
     private Bitmap getBitmapFromAsset(Context context, String strName) {
         AssetManager assetManager = context.getAssets();
-        InputStream istr = null;
+        InputStream istr;
+        Bitmap bitmap = null;
         try {
             istr = assetManager.open(strName);
-            return BitmapFactory.decodeStream(istr);
+            bitmap = BitmapFactory.decodeStream(istr);
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            // handle exception
         }
+
+        return bitmap;
     }
 
     private void setupFilters() {

@@ -83,6 +83,7 @@
 
 
     <color name="blue_color_picker">#0066FF</color>
+    <color name="blue_photo_picker">#014F74</color>
     <color name="brown_color_picker">#AF593E</color>
     <color name="green_color_picker">#01A368</color>
     <color name="orange_color_picker">#FF861F</color>
@@ -92,4 +93,8 @@
     <color name="violet_color_picker">#8359A3</color>
     <color name="yellow_color_picker">#FBE870</color>
     <color name="yellow_green_color_picker">#C5E17A</color>
+
+
+    <color name="profileViewpager">#444444</color>
+    <color name="crop">#832B2B2A</color>
 </resources>

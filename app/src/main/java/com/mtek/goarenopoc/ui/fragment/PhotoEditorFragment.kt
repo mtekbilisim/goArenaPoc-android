@@ -19,6 +19,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.FileProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
@@ -26,20 +27,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mtek.goarenopoc.R
 import com.mtek.goarenopoc.base.BaseFragment
 import com.mtek.goarenopoc.databinding.FragmentPhotoEditorBinding
-import com.mtek.goarenopoc.module.photofilter.core.EmojiBSFragment
-import com.mtek.goarenopoc.module.photofilter.core.PropertiesBSFragment
-import com.mtek.goarenopoc.module.photofilter.core.StickerBSFragment
-import com.mtek.goarenopoc.module.photofilter.core.TextEditorDialogFragment
+import com.mtek.goarenopoc.module.photofilter.core.*
 import com.mtek.goarenopoc.module.photofilter.filter.FilterListener
 import com.mtek.goarenopoc.module.photofilter.filter.FilterViewAdapter
 import com.mtek.goarenopoc.module.photofilter.tools.EditingToolsAdapter
 import com.mtek.goarenopoc.module.photofilter.tools.ToolType
 import com.mtek.goarenopoc.ui.MainActivity
 import com.mtek.goarenopoc.ui.fragment.home.HomeViewModel
-import com.mtek.goarenopoc.utils.extToast
-import com.mtek.goarenopoc.utils.setSafeOnClickListener
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
+import com.mtek.goarenopoc.utils.*
 import ja.burhanrashid52.photoeditor.*
 import ja.burhanrashid52.photoeditor.PhotoEditor.OnSaveListener
 import java.io.File
@@ -60,8 +55,7 @@ class PhotoEditorFragment :
     private val TAG: String =
         "Deneme"
     val FILE_PROVIDER_AUTHORITY = "com.mtek.goarenopoc.fileprovider"
-    private val CAMERA_REQUEST = 52
-    private val PICK_REQUEST = 53
+
     lateinit var mPhotoEditor: PhotoEditor
     private var mPropertiesBSFragment: PropertiesBSFragment? = null
     private var mEmojiBSFragment: EmojiBSFragment? = null
@@ -70,13 +64,34 @@ class PhotoEditorFragment :
     private var mRootView: ConstraintLayout? = null
     private val mConstraintSet = ConstraintSet()
     private var mIsFilterVisible = false
+    private var toBackPress = false;
 
     @VisibleForTesting
     var mSaveImageUri: Uri? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        photoControl()
         (requireActivity() as MainActivity).hideBottomNav()
+        init()
+    }
+
+    private fun photoControl() {
+        val uri = arguments?.getString(Constants.SELECTED_URI)
+        if (uri != null && uri != "") {
+            mSaveImageUri = Uri.parse(uri)
+            binding.photoEditorView.source.setImageURI(mSaveImageUri)
+            binding.rootView.visible()
+        } else {
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(
+                cameraIntent,
+                Constants.CAMERA_REQUEST
+            )
+        }
+    }
+
+    private fun init() {
 
         handleIntentImage(binding.photoEditorView.source)
 
@@ -103,7 +118,7 @@ class PhotoEditorFragment :
             .setPinchTextScalable(true)
             .build()
         mPhotoEditor.setOnPhotoEditorListener(this)
-        onClick()
+        clickFun()
     }
 
     private fun handleIntentImage(source: ImageView) {
@@ -157,7 +172,7 @@ class PhotoEditorFragment :
         )
     }
 
-   private fun onClick() {
+    private fun clickFun() {
 
         binding.imgSave.setSafeOnClickListener {
             saveImage()
@@ -169,27 +184,10 @@ class PhotoEditorFragment :
                 mTxtCurrentTool?.setText(R.string.app_name)
             } else if (!mPhotoEditor.isCacheEmpty) {
                 showSaveDialog()
+            } else {
+                (requireActivity() as MainActivity).onBackPressed()
             }
         }
-
-        binding.imgCamera.setSafeOnClickListener {
-            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(
-                cameraIntent,
-                CAMERA_REQUEST
-            )
-        }
-
-        binding.imgGallery.setSafeOnClickListener {
-            val intent = Intent()
-            intent.type = "image/*"
-            intent.action = Intent.ACTION_GET_CONTENT
-            startActivityForResult(
-                Intent.createChooser(intent, "Select Picture"),
-                PICK_REQUEST
-            )
-        }
-
 
     }
 
@@ -231,20 +229,24 @@ class PhotoEditorFragment :
                 mPhotoEditor.saveAsFile(file.absolutePath, saveSettings, object : OnSaveListener {
                     override fun onSuccess(imagePath: String) {
                         hideLoading()
-                        showSnackbar("Image Saved Successfully")
+                        requireContext().extToast("Image Saved Successfully")
                         mSaveImageUri = Uri.fromFile(File(imagePath))
                         binding.photoEditorView.source.setImageURI(mSaveImageUri)
+                        val bundle = Bundle()
+                        bundle.putString("SelectedImageUri", mSaveImageUri.toString())
+                        Constants.filterUriStr = mSaveImageUri.toString()
+                        findNavController().popBackStack()
                     }
 
                     override fun onFailure(exception: Exception) {
                         hideLoading()
-                        showSnackbar("Failed to save Image")
+                        requireContext().extToast("Failed to save Image")
                     }
                 })
             } catch (e: IOException) {
                 e.printStackTrace()
                 hideLoading()
-                showSnackbar((e.message)!!)
+                requireContext().extToast((e.message)!!)
             }
         }
     }
@@ -254,25 +256,30 @@ class PhotoEditorFragment :
 
         when (requestCode) {
 
-            CAMERA_REQUEST -> {
-                mSaveImageUri = data?.data
+            Constants.CAMERA_REQUEST -> {
                 mPhotoEditor.clearAllViews()
-                val photo = data?.extras!!["data"] as Bitmap?
-                binding.photoEditorView.source.setImageBitmap(photo)
-            }
-            CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
-                mSaveImageUri = data?.data
-                val uri = data?.data
-                val bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, uri)
-                binding.photoEditorView.source?.setImageBitmap(bitmap)
+                if (data != null) {
+                    mSaveImageUri = data.data
+                    binding.rootView.visible()
+                    val photo = data.extras!!["data"] as Bitmap?
+                    binding.photoEditorView.source.setImageBitmap(photo)
+                } else {
+                    (requireActivity() as MainActivity).onBackPressed()
+                }
 
             }
-            PICK_REQUEST -> try {
-                mSaveImageUri = data?.data
+            Constants.PICK_REQUEST -> try {
                 mPhotoEditor.clearAllViews()
                 val uri = data?.data
-                val bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, uri)
-                binding.photoEditorView.source?.setImageBitmap(bitmap)
+                if (uri != null) {
+                    mSaveImageUri = data.data
+                    binding.rootView.visible()
+                    val bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, uri)
+                    binding.photoEditorView.source?.setImageBitmap(bitmap)
+                } else {
+                    (requireActivity() as MainActivity).onBackPressed()
+                }
+
             } catch (e: IOException) {
                 e.printStackTrace()
             }
@@ -316,14 +323,14 @@ class PhotoEditorFragment :
         val builder = AlertDialog.Builder(requireContext())
         builder.setMessage(getString(R.string.msg_save_image))
         builder.setPositiveButton(
-            "Save"
+            "Kaydet"
         ) { dialog, which -> saveImage() }
         builder.setNegativeButton(
-            "Cancel"
+            "İptal"
         ) { dialog, which -> dialog.dismiss() }
         builder.setNeutralButton(
-            "Discard"
-        ) { dialog, which -> }
+            "Geri Dön"
+        ) { dialog, which -> (requireContext() as MainActivity).onBackPressed() }
         builder.create().show()
     }
 
@@ -359,12 +366,14 @@ class PhotoEditorFragment :
             ToolType.EMOJI -> showBottomSheetDialogFragment(mEmojiBSFragment)
             ToolType.STICKER -> showBottomSheetDialogFragment(mStickerBSFragment)
             ToolType.CROP -> {
-                CropImage.activity(mSaveImageUri)
-                    .setGuidelines(CropImageView.Guidelines.ON)
-                    .start(requireActivity());
+                val bundle = Bundle()
+                bundle.putString("SelectedImageUri", mSaveImageUri.toString())
+                findNavController().navigate(
+                    R.id.action_photoEditorFragment2_to_cropFragment,
+                    bundle
+                )
 
             }
-
         }
     }
 
@@ -380,6 +389,7 @@ class PhotoEditorFragment :
         mIsFilterVisible = isVisible
         mConstraintSet.clone(binding.rootView)
         if (isVisible) {
+            toBackPress = false
             mConstraintSet.clear(binding.rvFilterView.id, ConstraintSet.START)
             mConstraintSet.connect(
                 binding.rvFilterView.id, ConstraintSet.START,
@@ -390,16 +400,20 @@ class PhotoEditorFragment :
                 ConstraintSet.PARENT_ID, ConstraintSet.END
             )
         } else {
+
             mConstraintSet.connect(
                 binding.rvFilterView.id, ConstraintSet.START,
                 ConstraintSet.PARENT_ID, ConstraintSet.END
             )
             mConstraintSet.clear(binding.rvFilterView.id, ConstraintSet.END)
+            if (!toBackPress) {
+                toBackPress = true
+            }
         }
         val changeBounds = ChangeBounds()
         changeBounds.duration = 350
         changeBounds.interpolator = AnticipateOvershootInterpolator(1.0f)
-        TransitionManager.beginDelayedTransition((binding.rootView), changeBounds)
+        TransitionManager.beginDelayedTransition(binding.rootView, changeBounds)
         mConstraintSet.applyTo(binding.rootView)
     }
 

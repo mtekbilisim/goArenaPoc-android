@@ -32,15 +32,5 @@
         android:id="@+id/homeFragment"
         android:name="com.mtek.goarenopoc.ui.fragment.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
-
-        <action
-            android:id="@+id/action_homeFragment_to_photoEditorFragment"
-            app:destination="@id/photoEditorFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/photoEditorFragment"
-        android:name="com.mtek.goarenopoc.ui.fragment.PhotoEditorFragment"
-        android:label="fragment_photo_editor"
-        tools:layout="@layout/fragment_photo_editor" />
+        tools:layout="@layout/fragment_home" />
 </navigation>

@@ -23,13 +23,13 @@ public class EditingToolsAdapter extends RecyclerView.Adapter<EditingToolsAdapte
 
     public EditingToolsAdapter(OnItemSelected onItemSelected) {
         mOnItemSelected = onItemSelected;
-        mToolList.add(new ToolModel("Kalem", R.drawable.ic_brush, ToolType.BRUSH));
+        mToolList.add(new ToolModel("Kalem", R.drawable.ic_kalem, ToolType.BRUSH));
         mToolList.add(new ToolModel("Yazı", R.drawable.ic_text, ToolType.TEXT));
-        mToolList.add(new ToolModel("Silgi", R.drawable.ic_eraser, ToolType.ERASER));
-        mToolList.add(new ToolModel("Filtre", R.drawable.ic_photo_filter, ToolType.FILTER));
-        mToolList.add(new ToolModel("Emoji", R.drawable.ic_insert_emoticon, ToolType.EMOJI));
+        mToolList.add(new ToolModel("Silgi", R.drawable.ic_silgi, ToolType.ERASER));
+        mToolList.add(new ToolModel("Filtre", R.drawable.ic_filtre, ToolType.FILTER));
+        mToolList.add(new ToolModel("Emoji", R.drawable.ic_emoji, ToolType.EMOJI));
         mToolList.add(new ToolModel("Sticker", R.drawable.ic_sticker, ToolType.STICKER));
-      mToolList.add(new ToolModel("Crop", R.drawable.ic_sticker, ToolType.CROP));
+      mToolList.add(new ToolModel("Crop", R.drawable.ic_crop, ToolType.CROP));
 
     }
 

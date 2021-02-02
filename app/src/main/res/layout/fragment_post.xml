@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context=".ui.fragment.postfragment.PostFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_4ssp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btnCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_4ssp"
+                android:padding="@dimen/_6ssp"
+                android:layout_gravity="center_vertical"
+                app:tint="@color/colorPrimary"
+                android:src="@drawable/ic_close" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSendPost"
+                android:layout_width="@dimen/_100ssp"
+                android:layout_height="@dimen/_40ssp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/_16ssp"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="@string/sendPost"
+                app:iconSize="@dimen/_12ssp"
+                app:icon="@drawable/ic_check"
+                app:iconGravity="end"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp"
+                app:cornerRadius="@dimen/_10ssp"
+                app:elevation="@dimen/_4ssp"
+                app:rippleColor="@color/color_yellow" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_8ssp"
+            android:orientation="horizontal">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profileImage"
+                android:layout_width="@dimen/_50ssp"
+                android:layout_height="@dimen/_50ssp"
+                android:layout_marginStart="@dimen/_4ssp"
+                android:layout_marginTop="@dimen/_6ssp"
+                android:src="@color/color_yellow" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/float_edit_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                app:boxBackgroundMode="none">
+
+                <EditText
+                    android:id="@+id/et_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_6ssp"
+                    android:background="@color/white"
+                    android:gravity="start"
+                    android:textColorHint="@color/gray"
+                    android:hint="Kendinden bahsetsene ?"
+                    android:inputType="textMultiLine"
+
+                    android:maxLines="15"
+                    android:padding="10dp"
+                    android:textColor="#000" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        </LinearLayout>
+
+
+
+
+
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_110sdp"
+            android:id="@+id/recyclerView"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
+            android:clipToPadding="false"
+            android:paddingStart="@dimen/_12ssp"
+            android:paddingEnd="@dimen/_12ssp"
+            tools:listitem="@layout/row_item_post_thumnail_layout"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorPrimary"
+            android:layout_marginTop="@dimen/_6ssp"/>
+
+
+
+        <LinearLayout
+
+            android:layout_marginStart="@dimen/_12ssp"
+            android:layout_marginBottom="@dimen/_12ssp"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgCamera"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/_8ssp"
+                android:tint="@color/colorPrimary"
+                android:padding="@dimen/_8ssp"
+                android:src="@drawable/ic_camera" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgGallery"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/_8ssp"
+                android:tint="@color/colorPrimary"
+                android:padding="@dimen/_8ssp"
+                android:layout_marginStart="@dimen/_12ssp"
+                android:src="@drawable/ic_gallery" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/postMaxValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="/248"
+                android:textAlignment="viewEnd"
+                android:layout_marginTop="@dimen/_2ssp"
+                android:layout_marginEnd="@dimen/_16ssp"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/colorPrimary"
+                tools:ignore="RtlCompat" />
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+
+
+</FrameLayout>

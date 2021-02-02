@@ -26,7 +26,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>(HomeViewMod
 
         binding.toolbar.btnBack.setSafeOnClickListener {
 
-           // findNavController().navigate(R.id.action_homeFragment_to_photoEditorFragment)
+
         }
 
         val dataList = ArrayList<Data>()

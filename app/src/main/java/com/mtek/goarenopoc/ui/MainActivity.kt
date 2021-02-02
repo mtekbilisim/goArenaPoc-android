@@ -1,18 +1,19 @@
 package com.mtek.goarenopoc.ui
 
 
-import android.R.attr
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.mtek.goarenopoc.R
 import com.mtek.goarenopoc.base.BaseActivity
+import com.mtek.goarenopoc.base.BaseFragment
 import com.mtek.goarenopoc.databinding.ActivityMainBinding
 import com.mtek.goarenopoc.ui.fragment.splash.SplashViewModel
 import com.mtek.goarenopoc.utils.setupWithNavController
@@ -49,7 +50,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, SplashViewModel>(SplashVi
             "Reselect blocked."
         }
 
-        val navGraphIds = listOf(R.navigation.home, R.navigation.dashboard)
+        val navGraphIds = listOf(R.navigation.home, R.navigation.add, R.navigation.dashboard)
         val controller = binding?.bottomAppBar?.setupWithNavController(
             navGraphIds = navGraphIds,
             fragmentManager = supportFragmentManager,
@@ -74,6 +75,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, SplashViewModel>(SplashVi
         val start = Navigation.findNavController(this, R.id.nav_host_container).currentDestination!!.id
         if (start == R.id.homeFragment) {
             if (doubleBackToExitPressedOnce) {
+
                 finishAfterTransition()
                 return
             }
@@ -82,6 +84,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, SplashViewModel>(SplashVi
                 .show()
             Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
         } else {
+          //  tellFragments();
             super.onBackPressed()
         }
     }
@@ -89,9 +92,16 @@ class MainActivity : BaseActivity<ActivityMainBinding, SplashViewModel>(SplashVi
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         for (fragment in supportFragmentManager.fragments) {
-            fragment.onActivityResult(requestCode, resultCode,data)
+            fragment.onActivityResult(requestCode, resultCode, data)
         }
     }
+
+//    private fun tellFragments() {
+//        val fragments: List<Fragment> = supportFragmentManager.fragments
+//        for (f in fragments) {
+//            if (f != null && f is BaseFragment<*, *>) f.onBackPressed()
+//        }
+//    }
 
 
 }

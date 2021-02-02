@@ -23,18 +23,18 @@
             <ImageView
                 android:id="@+id/btnBack"
                 android:layout_width="wrap_content"
-                android:layout_gravity="end"
+                android:layout_gravity="end|center"
                 android:layout_height="match_parent"
                 android:padding="@dimen/_12ssp"
                 android:src="@drawable/ic_search"
                 app:tint="@color/white" />
 
             <ImageView
-                android:layout_width="@dimen/_60ssp"
-                android:layout_height="match_parent"
+                android:layout_width="@dimen/_50ssp"
+                android:layout_height="@dimen/_50ssp"
                 android:padding="@dimen/_8ssp"
                 android:layout_gravity="center"
-                android:src="@drawable/logo_turkcell" />
+                android:src="@drawable/ic_logo" />
 
         </FrameLayout>
 

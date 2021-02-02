@@ -12,6 +12,7 @@ import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -75,6 +76,10 @@ fun <T> Bundle.put(key: String, value: T) {
         is Serializable -> putSerializable(key, value)
         else -> throw IllegalStateException("")
     }
+}
+
+fun EditText.getLength() : String{
+    return this.length().toString()
 }
 
 fun loadImage(

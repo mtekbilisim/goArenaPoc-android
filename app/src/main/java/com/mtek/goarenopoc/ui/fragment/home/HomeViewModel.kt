@@ -5,14 +5,14 @@ import com.mtek.goarenopoc.data.repository.HomeRepository
 
 class HomeViewModel : BaseViewModel<HomeRepository>(HomeRepository::class){
 
-    fun senRequestVersionControl(){
-        sendRequest {
-            repository.home().run {
-
-            }
-            errMsg?.let {
-                it.postValue(errMsg.value)
-            }
-        }
-    }
+//    fun senRequestVersionControl(){
+//        sendRequest {
+//            repository.home().run {
+//
+//            }
+//            errMsg?.let {
+//                it.postValue(errMsg.value)
+//            }
+//        }
+//    }
 }

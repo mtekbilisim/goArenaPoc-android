@@ -1,21 +1,19 @@
 package com.mtek.goarenopoc.base
 
-import android.R
+
 import android.app.ProgressDialog
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.NavHostFragment
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
+import com.mtek.goarenopoc.R
 import com.mtek.goarenopoc.module.progress.ProgressBar
-import com.mtek.goarenopoc.utils.extToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.reflect.KClass
 
@@ -53,14 +51,6 @@ abstract class BaseFragment<VB : ViewBinding, out BVM : BaseViewModel<BaseReposi
         savedInstanceState: Bundle?
     ): View? {
         binding = getViewBinding()
-//        requireActivity().onBackPressedDispatcher.addCallback(
-//            viewLifecycleOwner,
-//            object : OnBackPressedCallback(true) {
-//
-//                override fun handleOnBackPressed() {
-//                    goBack()
-//                }
-//            });
         return  binding.root
     }
 
@@ -74,9 +64,8 @@ abstract class BaseFragment<VB : ViewBinding, out BVM : BaseViewModel<BaseReposi
 
     protected inline fun viewBinding(action: VB.() -> Unit) = action(binding)
 
-    val READ_WRITE_STORAGE = 52
+    private val READ_WRITE_STORAGE = 52
     private var mProgressDialog: ProgressDialog? = null
-
 
     open fun requestPermission(permission: String): Boolean {
         val isGranted =
@@ -127,13 +116,9 @@ abstract class BaseFragment<VB : ViewBinding, out BVM : BaseViewModel<BaseReposi
         }
     }
 
-    protected open fun showSnackbar(message: String) {
-        val view = requireView().findViewById<View>(R.id.content)
-        if (view != null) {
-            Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-        }
-    }
+
+
+
+
 
 }

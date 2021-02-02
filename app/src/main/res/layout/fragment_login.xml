@@ -1,28 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary"
-    android:orientation="vertical"
+
     tools:context=".ui.fragment.login.LoginFragment">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="@dimen/_60ssp"
-        android:layout_height="@dimen/_60ssp"
-        android:layout_marginTop="@dimen/_60ssp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/logo_turkcell"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/go_areno"
-        android:textSize="@dimen/_24ssp"
-        android:textColor="@color/white"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/_20ssp"/>
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/_60ssp"
+            android:layout_height="@dimen/_60ssp"
+            android:layout_marginTop="@dimen/_60ssp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/logo_turkcell"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/go_areno"
+            android:textSize="@dimen/_24ssp"
+            android:textColor="@color/white"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_20ssp"/>
 
 
 
@@ -70,7 +75,7 @@
                 app:inputTitle="Şifre"
                 app:isForced="false"
                 app:inputType="passwordd"
-                 />
+                />
 
             <LinearLayout
                 android:gravity="end|center_horizontal"
@@ -124,16 +129,20 @@
         </LinearLayout>
 
 
-    <ImageView
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/forgot"
-        android:layout_marginTop="@dimen/_20ssp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_forgot_password"/>
+        <ImageView
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/forgot"
+            android:layout_marginTop="@dimen/_20ssp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_forgot_password"/>
 
 
 
 
+    </LinearLayout>
 
-</LinearLayout>
+
+
+
+</androidx.core.widget.NestedScrollView>
