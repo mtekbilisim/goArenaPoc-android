@@ -113,6 +113,8 @@ dependencies {
     compileOnly kotlinGeneralDependencies.checker_qual
     implementation kotlinGeneralDependencies.annotation
     implementation kotlinGeneralDependencies.lottie
+    implementation kotlinGeneralDependencies.hello_chart
+    implementation kotlinGeneralDependencies.mp_chart
     implementation 'ja.burhanrashid52:photoeditor:1.1.0'
     implementation 'com.isseiaoki:simplecropview:1.1.8'
 
