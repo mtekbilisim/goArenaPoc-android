@@ -40,7 +40,7 @@ class UserTokenHeader : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response { //Log.e("User-Agent",userAgent);
 
         val userAgentRequest = with(chain.request().newBuilder(), {
-            addHeader("Authorization", "Bearer ${LocalDataManager.instance.getSharedPreferenceString(Constants.CURRENT_CONTEXT!!, Constants.ACCESS_TOKEN, "")}")
+           // addHeader("Authorization", "Bearer ${LocalDataManager.instance.getSharedPreferenceString(Constants.CURRENT_CONTEXT!!, Constants.ACCESS_TOKEN, "")}")
             addHeader(Constants.DEVICES_NAME,"${Build.BRAND} / ${Build.MODEL}")
             addHeader(Constants.HEADER_TIME_ZONE, TIME_ZONE.toString())
             addHeader(Constants.HEADER_CONTENT_TYPE, "application/json")

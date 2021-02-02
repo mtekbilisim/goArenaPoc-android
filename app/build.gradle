@@ -30,7 +30,7 @@ android {
             applicationIdSuffix ".stb"
             versionNameSuffix '-stb'
             resValue "string", "app_name", "Go Areno POC"
-            buildConfigField "String", 'BASE_URL', '"..."'
+            buildConfigField "String", 'BASE_URL', '"http://turkcell.mtek.me:8080/"'
             buildConfigField "Boolean", 'DEV_MOD', 'false'
 
         }

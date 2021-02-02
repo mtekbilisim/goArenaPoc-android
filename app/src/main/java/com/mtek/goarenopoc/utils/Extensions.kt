@@ -37,6 +37,7 @@ import com.mtek.goarenopoc.R
 import com.mtek.goarenopoc.base.BaseActivity
 import com.mtek.goarenopoc.base.Errors
 import com.mtek.goarenopoc.utils.manager.LocalDataManager
+import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.RequestBody
 import okio.Buffer
 import java.io.File
@@ -87,6 +88,19 @@ fun EditText.getLength() : String{
 
 fun loadImage(
     view: ImageView,
+    url: String?,
+    progressDrawable: CircularProgressDrawable?
+) {
+    val options: RequestOptions = RequestOptions()
+        .placeholder(progressDrawable)
+        .error(R.mipmap.ic_launcher_round)
+    Glide.with(view.context)
+        .setDefaultRequestOptions(options)
+        .load(url)
+        .into(view)
+}
+fun loadImageCircle(
+    view: CircleImageView,
     url: String?,
     progressDrawable: CircularProgressDrawable?
 ) {

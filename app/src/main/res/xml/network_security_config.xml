@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">http://turkcell.mtek.me:8080/</domain>
+    </domain-config>
+</network-security-config>
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<network-security-config>-->
+    <!--    <base-config cleartextTrafficPermitted="false">-->
+    <!--        <trust-anchors>-->
+    <!--            <certificates src="system" />-->
+    <!--        </trust-anchors>-->
+    <!--    </base-config>-->
+    <!--&lt;!&ndash;    <domain-config cleartextTrafficPermitted="false">&ndash;&gt;-->
+    <!--&lt;!&ndash;        <domain includeSubdomains="true">http://176.53.50.163:8899/</domain>&ndash;&gt;-->
+    <!--&lt;!&ndash;    </domain-config>&ndash;&gt;-->
+    <!--    <domain-config cleartextTrafficPermitted="true">-->
+    <!--        <domain includeSubdomains="true">http://176.53.50.163:8899</domain>-->
+    <!--    </domain-config>-->
+
+    <!--</network-security-config>-->
