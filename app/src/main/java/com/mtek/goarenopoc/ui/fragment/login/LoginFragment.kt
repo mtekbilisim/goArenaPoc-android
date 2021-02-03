@@ -26,6 +26,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding,LoginViewModel>(LoginVie
         if (it != null){
             Constants.ACCESS_TOKEN = it.access_token
             Constants.TOKEN_TYPE = it.tokenType.toString()
+            if (LocalDataManager.instance.getSharedPreferenceBoolean(BaseApp.appContext,Constants.SAVE_INFORMATION,false)){
+                LocalDataManager.instance.setSharedPreferenceString(BaseApp.appContext, Constants.EMAIL,  binding.txtEmail.text)
+                LocalDataManager.instance.setSharedPreferenceString(BaseApp.appContext, Constants.XPS, binding.txtXps.text)
+            }
             LocalDataManager.instance.setSharedPreferenceString(BaseApp.appContext, "token", it.access_token)
             viewModel.senRequestInformation()
         }
@@ -44,19 +48,41 @@ class LoginFragment : BaseFragment<FragmentLoginBinding,LoginViewModel>(LoginVie
             responseUserInformation.observe(viewLifecycleOwner,observerInformation)
         }
       clickFun()
-        viewBinding {
-            txtEmail.text = "brkcnszgn@gmail.com"
-            txtXps.text = "Dd123123"
+       rememberControl()
+    }
+
+    private fun rememberControl() {
+        if (LocalDataManager.instance.getSharedPreferenceBoolean(BaseApp.appContext, Constants.SAVE_INFORMATION, false)) {
+            viewBinding {
+                rememberMe.isChecked = true
+            }
+            viewBinding {
+                txtEmail.text = LocalDataManager.instance.getSharedPreferenceString(BaseApp.appContext, Constants.EMAIL, "")
+                txtXps.text = LocalDataManager.instance.getSharedPreferenceString(BaseApp.appContext, Constants.XPS, "")
+            }
+
         }
     }
 
     private fun clickFun(){
-        binding.btnLogin.setSafeOnClickListener {
-            if (validate()){
-                viewModel.senRequestToken(LoginRequestModel(binding.txtEmail.text.toString(),binding.txtXps.text.toString()))
-            }
+        viewBinding {
 
+            rememberMe.setOnCheckedChangeListener { _, p1 ->
+                if (p1) {
+                    LocalDataManager.instance.setSharedPreferenceBoolean(BaseApp.appContext, Constants.SAVE_INFORMATION, true)
+                } else {
+                    LocalDataManager.instance.setSharedPreferenceBoolean(BaseApp.appContext, Constants.SAVE_INFORMATION, false)
+
+                }
+            }
+            btnLogin.setSafeOnClickListener {
+                if (validate()){
+                    viewModel.senRequestToken(LoginRequestModel(binding.txtEmail.text.toString(),binding.txtXps.text.toString()))
+                }
+
+            }
         }
+
     }
 
     private fun validate(): Boolean{

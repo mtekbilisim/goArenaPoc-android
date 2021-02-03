@@ -28,6 +28,7 @@ import com.mtek.goarenopoc.databinding.FragmentPostBinding
 import com.mtek.goarenopoc.ui.MainActivity
 import com.mtek.goarenopoc.ui.fragment.SharedViewModel
 import com.mtek.goarenopoc.utils.*
+import com.mtek.goarenopoc.utils.manager.UserManager
 import okhttp3.MultipartBody
 import pl.aprilapps.easyphotopicker.*
 
@@ -161,7 +162,7 @@ class PostFragment : BaseFragment<FragmentPostBinding, PostViewModel>(PostViewMo
 
     private fun sendPost() {
 
-        val type = if (!returnedPhotos.isNullOrEmpty()) {
+        val type = if (!photos.isNullOrEmpty()) {
             "IMAGE"
         } else {
             "TEXT"
@@ -173,7 +174,7 @@ class PostFragment : BaseFragment<FragmentPostBinding, PostViewModel>(PostViewMo
                 type,
                 0,
                 currentDay,
-                10,
+                UserManager.instance.user?.id,
                 "DRAFT"
             )
         )

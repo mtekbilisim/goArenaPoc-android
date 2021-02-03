@@ -40,7 +40,7 @@ class HolderOnlyText(parent: ViewGroup) : RecyclerView.ViewHolder(
             getProgressDrawable(profilePhoto.context)
         )
         userName.text = item.user?.username
-        date.text = item.postDate
+        date.text =  DateManager.formatDate(item.postDate,"MMM dd.mm.yyyy")
         txtText.text = item.title
         likeState.text = "   ${item.likes.toString()}"
         commentState.text = "   123"
