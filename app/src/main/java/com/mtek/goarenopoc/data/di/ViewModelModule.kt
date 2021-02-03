@@ -2,6 +2,7 @@ package com.mtek.goarenopoc.data.di
 
 
 
+import com.mtek.goarenopoc.ui.fragment.dashboard.DashboardViewModel
 import com.mtek.goarenopoc.ui.fragment.home.HomeViewModel
 import com.mtek.goarenopoc.ui.fragment.postfragment.PostViewModel
 import com.mtek.goarenopoc.ui.fragment.splash.SplashViewModel
@@ -16,6 +17,9 @@ val viewModelModule = module {
     }
     viewModel {
        PostViewModel()
+    }
+    viewModel {
+       DashboardViewModel()
     }
 }
 
