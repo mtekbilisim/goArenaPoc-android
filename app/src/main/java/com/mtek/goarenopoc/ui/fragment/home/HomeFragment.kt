@@ -17,10 +17,8 @@ import com.mtek.goarenopoc.ui.MainActivity
 import com.mtek.goarenopoc.ui.adapter.homefeed.HomeFeedAdapter
 import com.mtek.goarenopoc.ui.adapter.homefeed.LayoutType
 import com.mtek.goarenopoc.ui.fragment.bottom.FeedEditBottomDialog
-import com.mtek.goarenopoc.utils.applyDivider
-import com.mtek.goarenopoc.utils.flag_error
-import com.mtek.goarenopoc.utils.gone
-import com.mtek.goarenopoc.utils.setSafeOnClickListener
+import com.mtek.goarenopoc.utils.*
+import de.hdodenhof.circleimageview.CircleImageView
 
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(HomeViewModel::class) {
@@ -29,11 +27,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(HomeViewMo
 
     var responseFeedList: ArrayList<FeedModel>? = arrayListOf()
     private var homeAdapter: HomeFeedAdapter? = null
+ private var baseAdapter: BaseAdapter<FeedModel>? = null
 
     private val observerFeed: Observer<FeedResponseModel> = Observer {
         if (it != null) {
             responseFeedList = it.data as ArrayList<FeedModel>?
            homeAdapter?.setList(responseFeedList)
+            baseAdapter?.setList(responseFeedList)
         }
         flag_error("${responseFeedList.toString()}")
     }
@@ -88,20 +88,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(HomeViewMo
         dataList.add(Data(LayoutType.Text.id, "11. Hi! I am in View 11"))
         dataList.add(Data(LayoutType.Thumnail.id, "12. Hi! I am in View 12"))
 
+      baseAdapter =   BaseAdapter(
+            requireContext(), R.layout.row_item_feed_stories,
+            responseFeedList
+        ) { v, item, position ->
+            val view = v?.findViewById<View>(R.id.view)
+            val imageView = v?.findViewById<CircleImageView>(R.id.profileImage)
 
+            loadImageCircle(imageView!!,item.user?.avatar, getProgressDrawable(imageView.context))
+
+            if (position != 0) {
+                view?.gone()
+            }
+
+        }
 
         binding.recyclerStories.apply {
-            adapter = BaseAdapter<String>(
-                requireContext(), R.layout.row_item_feed_stories,
-                arrayListOf("1", "2", "3", "4", "5", "1", "2", "3", "4", "5")
-            ) { v, item, position ->
-                val view = v?.findViewById<View>(R.id.view)
-
-                if (position != 0) {
-                    view?.gone()
-                }
-
-            }
+            adapter = baseAdapter
         }
 
     }
