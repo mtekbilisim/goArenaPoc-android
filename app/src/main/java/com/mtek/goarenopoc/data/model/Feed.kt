@@ -1,5 +1,7 @@
 package com.mtek.goarenopoc.data.model
 
+import com.google.gson.annotations.Expose
+
 data class FeedModel(
     val id : Int?,
     val title : String?,
@@ -9,7 +11,9 @@ data class FeedModel(
     val postDate : String?,
     val medias : ArrayList<MediaModel>?,
     val user : UserModel?,
-    val status : String?
+    val status : String?,
+    @Expose
+    var isDeleteFunWork : Boolean = false
 ){
 
     override fun toString(): String {

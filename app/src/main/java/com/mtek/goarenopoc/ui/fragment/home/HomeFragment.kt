@@ -3,6 +3,7 @@ package com.mtek.goarenopoc.ui.fragment.home
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.mtek.goarenopoc.R
@@ -15,6 +16,7 @@ import com.mtek.goarenopoc.databinding.FragmentHomeBinding
 import com.mtek.goarenopoc.ui.MainActivity
 import com.mtek.goarenopoc.ui.adapter.homefeed.HomeFeedAdapter
 import com.mtek.goarenopoc.ui.adapter.homefeed.LayoutType
+import com.mtek.goarenopoc.ui.fragment.bottom.FeedEditBottomDialog
 import com.mtek.goarenopoc.utils.applyDivider
 import com.mtek.goarenopoc.utils.flag_error
 import com.mtek.goarenopoc.utils.gone
@@ -45,11 +47,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(HomeViewMo
         clickFun()
     }
 
+
+
     private fun init() {
         viewModel {
             feedResponse.observe(viewLifecycleOwner, observerFeed)
 
         }
+       updateNewData()
+    }
+
+    fun updateNewData(){
         viewModel.senRequestVFeed()
     }
 
@@ -99,7 +107,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(HomeViewMo
     }
 
     private fun setAdapter() {
-        homeAdapter = HomeFeedAdapter(responseFeedList as ArrayList<FeedModel>) {}
+        homeAdapter = HomeFeedAdapter(responseFeedList as ArrayList<FeedModel>) {
+               if ( it.isDeleteFunWork){
+                   viewModel.sendRequestDelete(it.id.toString())
+                   viewModel.senRequestVFeed()
+               }
+        }
         binding.recyclerFeed.apply {
             adapter = homeAdapter
 

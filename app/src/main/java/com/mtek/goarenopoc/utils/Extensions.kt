@@ -1,6 +1,7 @@
 package com.mtek.goarenopoc.utils
 
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -8,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
+import android.text.TextUtils
 import android.util.Log
 import android.util.SparseArray
 import android.view.View
@@ -563,6 +565,34 @@ fun RecyclerView.applyDivider() {
     drawable?.let {
         divider.setDrawable(it)
         addItemDecoration(divider)
+    }
+
+    val dateFormats = arrayOf(
+        "yyyy-MM-dd'T'HH:mm:ss.SSSSSSSZ",
+        "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+        "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+        "yyyy-MM-dd'T'HH:mm:ssZ",
+        "yyyy-MM-dd'T'HH:mm:ss",
+        "yyyy-MM-dd HH:mm:ss"
+    )
+    @SuppressLint("SimpleDateFormat")
+    fun formatDate(currentDate: String?, targetDateFormat: String?): String? {
+        var result = currentDate
+        var sdf: SimpleDateFormat
+        if (TextUtils.isEmpty(currentDate)) {
+            return ""
+        }
+        for (format in dateFormats) {
+            try {
+                sdf = SimpleDateFormat(format)
+                val date = sdf.parse(currentDate)
+                sdf = SimpleDateFormat(targetDateFormat)
+                result = sdf.format(date)
+                break
+            } catch (e: Exception) {
+            }
+        }
+        return result
     }
 }
 

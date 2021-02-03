@@ -67,9 +67,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, SplashViewModel>(SplashVi
 
     }
 
-    fun asd(){
 
-    }
 
     override fun onSupportNavigateUp(): Boolean = currentNavController?.value?.navigateUp() ?: false
 

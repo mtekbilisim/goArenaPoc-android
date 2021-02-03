@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/app_bar_rounded"
+    android:orientation="vertical"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_baseline_horizontal_rule_24" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtModify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20ssp"
+        android:layout_marginTop="@dimen/_20ssp"
+        android:text="    Gönder Düzenle"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_16ssp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtDelete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20ssp"
+        android:layout_marginTop="@dimen/_12ssp"
+        android:text="    Gönderi Sil"
+        android:textColor="@color/white"
+        android:layout_marginBottom="@dimen/_16ssp"
+        android:textSize="@dimen/_16ssp" />
+
+
+
+
+</LinearLayout>

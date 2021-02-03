@@ -54,7 +54,7 @@
                 android:padding="@dimen/_6ssp"
                 android:src="@drawable/ic_figma_more"
                 android:layout_marginEnd="@dimen/_8ssp"
-                android:id="@+id/imageView"/>
+                android:id="@+id/btnEdit"/>
 
 
         </FrameLayout>

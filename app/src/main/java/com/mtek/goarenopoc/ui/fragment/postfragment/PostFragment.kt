@@ -19,10 +19,8 @@ import androidx.navigation.fragment.findNavController
 import com.mtek.goarenopoc.R
 import com.mtek.goarenopoc.base.BaseAdapter
 import com.mtek.goarenopoc.base.BaseFragment
-import com.mtek.goarenopoc.data.model.FeedPlainModel
-import com.mtek.goarenopoc.data.model.FileModel
-import com.mtek.goarenopoc.data.model.MediaModel
-import com.mtek.goarenopoc.data.model.UploadRequestBody
+import com.mtek.goarenopoc.data.model.*
+import com.mtek.goarenopoc.data.network.response.FeedUpdateResponseModel
 import com.mtek.goarenopoc.data.network.response.FileResponseModel
 import com.mtek.goarenopoc.data.network.response.MediaModelResponseModel
 import com.mtek.goarenopoc.data.network.response.PostResponseModel
@@ -58,6 +56,19 @@ class PostFragment : BaseFragment<FragmentPostBinding, PostViewModel>(PostViewMo
 
     }
 
+    private val observerUpdateFeed : Observer<FeedUpdateResponseModel> = Observer {
+        if (it != null){
+            cleanForm()
+            sharedViewModel.setFilteredImage("")
+            sharedViewModel.setPostValue("")
+            sharedViewModel.setUpdateFeedModel(FeedModel(null,null,null,null,null,null,null,null,null))
+            progressBar.hide()
+            updateFeed = false
+            findNavController().navigate(R.id.action_postFragment2_to_homeFragment)
+
+        }
+    }
+
     private val observerCompleted: Observer<MediaModelResponseModel> = Observer {
         if (it != null) {
             flag_error("${it.toString()}")
@@ -82,6 +93,8 @@ class PostFragment : BaseFragment<FragmentPostBinding, PostViewModel>(PostViewMo
     private var photos: ArrayList<MediaFile>? = arrayListOf()
     private var baseAdapter: BaseAdapter<MediaFile>? = null
     lateinit var sharedViewModel: SharedViewModel
+    private var updateFeed : Boolean = false
+    private var updateFeedModel : FeedModel?= null
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -90,6 +103,7 @@ class PostFragment : BaseFragment<FragmentPostBinding, PostViewModel>(PostViewMo
             responseFile.observe(viewLifecycleOwner, observerFile)
             responseFeed.observe(viewLifecycleOwner, observerRequest)
             responseCompleted.observe(viewLifecycleOwner, observerCompleted)
+            responseUpdateFeed.observe(viewLifecycleOwner,observerUpdateFeed)
         }
         updateUI()
         edtContentControl()
@@ -100,6 +114,16 @@ class PostFragment : BaseFragment<FragmentPostBinding, PostViewModel>(PostViewMo
 
     private fun updateUI() {
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+
+        sharedViewModel.getFeedUpdateIdModel().observe(viewLifecycleOwner,{
+            if (it!= null){
+                binding.etContent.setText(it.title)
+                binding.etContent.requestFocus()
+                updateFeed = true
+                updateFeedModel = it
+            }
+        })
+
         sharedViewModel.getPostValue().observe(viewLifecycleOwner, Observer {
             binding.etContent.setText(it)
         })
@@ -163,6 +187,12 @@ class PostFragment : BaseFragment<FragmentPostBinding, PostViewModel>(PostViewMo
         binding.imgCamera.setSafeOnClickListener { openCamera() }
 
         binding.btnSendPost.setSafeOnClickListener {
+            if (updateFeed){
+                updateFeed()
+                return@setSafeOnClickListener
+            }
+
+
             if (!photos.isNullOrEmpty()){
                 for (i in photos!!) {
                     val body = UploadRequestBody(i.file, "image")
@@ -197,6 +227,20 @@ class PostFragment : BaseFragment<FragmentPostBinding, PostViewModel>(PostViewMo
                 )
             }
         }
+    }
+
+   private fun updateFeed(){
+       viewModel.senRequestUpdateFeed(updateFeedModel?.id.toString(),   FeedPlainModel(
+                updateFeedModel?.id,
+                binding.etContent.text.toString(),
+                updateFeedModel?.postType,
+                updateFeedModel?.likes,
+                updateFeedModel?.postDate,
+                updateFeedModel?.user?.id,
+                "DRAFT"
+            ))
+
+
     }
 
 

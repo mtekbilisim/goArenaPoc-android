@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.mtek.goarenopoc.base.BaseViewModel
 import com.mtek.goarenopoc.data.model.FeedPlainModel
 import com.mtek.goarenopoc.data.model.MediaModel
+import com.mtek.goarenopoc.data.network.response.FeedUpdateResponseModel
 import com.mtek.goarenopoc.data.network.response.FileResponseModel
 import com.mtek.goarenopoc.data.network.response.MediaModelResponseModel
 import com.mtek.goarenopoc.data.network.response.PostResponseModel
@@ -15,6 +16,9 @@ class PostViewModel : BaseViewModel<PostRepository>(PostRepository::class) {
 
     private val _mutableFeed: MutableLiveData<PostResponseModel> = MutableLiveData()
     val responseFeed: LiveData<PostResponseModel> = _mutableFeed
+
+    private val _mutableUpdateFeed: MutableLiveData<FeedUpdateResponseModel> = MutableLiveData()
+    val responseUpdateFeed: LiveData<FeedUpdateResponseModel> = _mutableUpdateFeed
 
     private val _mutableFile: MutableLiveData<FileResponseModel> = MutableLiveData()
     val responseFile: LiveData<FileResponseModel> = _mutableFile
@@ -27,6 +31,17 @@ class PostViewModel : BaseViewModel<PostRepository>(PostRepository::class) {
         sendRequest {
             repository.feedRequest(request).run {
                 _mutableFeed.postValue(this)
+            }
+            errMsg?.let {
+                it.postValue(errMsg.value)
+            }
+        }
+    }
+
+    fun senRequestUpdateFeed(feedId: String,request: FeedPlainModel) {
+        sendRequest {
+            repository.feedUpdateRequest(feedId,request).run {
+                _mutableUpdateFeed.postValue(this)
             }
             errMsg?.let {
                 it.postValue(errMsg.value)
@@ -49,7 +64,7 @@ class PostViewModel : BaseViewModel<PostRepository>(PostRepository::class) {
     fun sendCompletedFeed(feedId: String, image: ArrayList<MediaModel>) {
         sendRequest {
             repository.feedCompleted(feedId, image).run {
-                _mutableCompletedFeed .postValue(this)
+                _mutableCompletedFeed.postValue(this)
             }
             errMsg?.let {
                 it.postValue(errMsg.value)

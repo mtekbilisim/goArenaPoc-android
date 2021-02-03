@@ -12,9 +12,9 @@ import com.mtek.goarenopoc.R
 import com.mtek.goarenopoc.base.BaseAdapter
 import com.mtek.goarenopoc.data.model.FeedModel
 import com.mtek.goarenopoc.data.model.MediaModel
-import com.mtek.goarenopoc.utils.getProgressDrawable
-import com.mtek.goarenopoc.utils.loadImage
-import com.mtek.goarenopoc.utils.loadImageCircle
+import com.mtek.goarenopoc.ui.MainActivity
+import com.mtek.goarenopoc.ui.fragment.bottom.FeedEditBottomDialog
+import com.mtek.goarenopoc.utils.*
 import de.hdodenhof.circleimageview.CircleImageView
 
 
@@ -33,6 +33,7 @@ class HolderThumbnail(parent: ViewGroup) : RecyclerView.ViewHolder(
     val txtText = itemView.findViewById(R.id.txtText) as AppCompatTextView
     val likeState = itemView.findViewById(R.id.likeState) as AppCompatTextView
     val commentState = itemView.findViewById(R.id.commentState) as AppCompatTextView
+    val btnEdit = itemView?.findViewById(R.id.btnEdit) as AppCompatImageView
 
     fun bind(
         item: FeedModel,
@@ -43,11 +44,25 @@ class HolderThumbnail(parent: ViewGroup) : RecyclerView.ViewHolder(
        item.user?.avatar,
        getProgressDrawable(profilePhoto.context)
    )
+        btnEdit.setSafeOnClickListener {
+            FeedEditBottomDialog(item) {
+                item.isDeleteFunWork = true
+                onItemClickListener.invoke(item)
+
+            }.show((itemView.context as MainActivity).supportFragmentManager,"Detail")
+        }
         userName.text = item.user?.username
-        date.text = item.postDate
+        date.text =  DateManager.formatDate(item.postDate,"MMM dd.mm.yyyy")
         txtText.text = item.title
         likeState.text = "   ${item.likes.toString()}"
         commentState.text = "   123"
+
+        if (item.user?.id != 7){
+            btnEdit.gone()
+        }else{
+             btnEdit.visible()
+        }
+
                 rc?.adapter = BaseAdapter<MediaModel>(
                     itemView.context, R.layout.row_item_thumnail_layout,
                     item.medias
@@ -61,6 +76,7 @@ class HolderThumbnail(parent: ViewGroup) : RecyclerView.ViewHolder(
                    // loadImage(imageView, item.uri, getProgressDrawable(imageView.context))
 
                 }
+
         itemView.setOnClickListener {
             onItemClickListener(item)
         }
