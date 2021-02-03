@@ -7,6 +7,8 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import com.mtek.goarenopoc.data.model.FeedPlainModel
 import com.mtek.goarenopoc.data.model.MediaModel
+import com.mtek.goarenopoc.data.model.TokenModel
+import com.mtek.goarenopoc.data.network.request.LoginRequestModel
 import com.mtek.goarenopoc.data.network.response.*
 import okhttp3.MultipartBody
 import retrofit2.http.*
@@ -16,6 +18,14 @@ interface ApiService {
     //GetFeed
     @GET("feeds")
     suspend fun feedAllRequest(): FeedResponseModel
+
+  @POST("authentication/token")
+    suspend fun authentication(
+      @Body request : LoginRequestModel
+  ): TokenModel
+
+ @GET("authentication/me")
+    suspend fun getUser(): UserResponseModel
 
     //FeedCreate
     @POST("feeds")

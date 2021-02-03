@@ -1,6 +1,7 @@
 package com.mtek.goarenopoc.data.network.client
 
 import android.os.Build
+import com.mtek.BaseApp
 import com.mtek.goarenopoc.utils.Constants
 import com.mtek.goarenopoc.utils.bodyToString
 import com.mtek.goarenopoc.utils.flag_error
@@ -40,8 +41,20 @@ class UserTokenHeader : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response { //Log.e("User-Agent",userAgent);
 
         val userAgentRequest = with(chain.request().newBuilder(), {
-           // addHeader("Authorization", "Bearer ${LocalDataManager.instance.getSharedPreferenceString(Constants.CURRENT_CONTEXT!!, Constants.ACCESS_TOKEN, "")}")
-            addHeader(Constants.DEVICES_NAME,"${Build.BRAND} / ${Build.MODEL}")
+
+                addHeader(
+                    "Authorization",
+                    "Bearer ${
+                        LocalDataManager.instance.getSharedPreferenceString(
+                            BaseApp.appContext,
+                            "token",
+                            ""
+                        )
+                    }"
+                )
+
+
+            addHeader(Constants.DEVICES_NAME, "${Build.BRAND} / ${Build.MODEL}")
             addHeader(Constants.HEADER_TIME_ZONE, TIME_ZONE.toString())
             addHeader(Constants.HEADER_CONTENT_TYPE, "application/json")
             addHeader(Constants.HEADER_USER_AGENT, userAgent)

@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.text.TextUtils
 import android.util.Log
+import android.util.Patterns
 import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
@@ -36,10 +37,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.textfield.TextInputEditText
 import com.mtek.goarenopoc.R
 import com.mtek.goarenopoc.base.BaseActivity
 import com.mtek.goarenopoc.base.BaseErrorModel
+import com.mtek.goarenopoc.base.BaseFragment
 import com.mtek.goarenopoc.base.Errors
+import com.mtek.goarenopoc.module.textinput.TextInputView
 import com.mtek.goarenopoc.utils.manager.LocalDataManager
 import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.RequestBody
@@ -234,8 +238,8 @@ inline fun <reified T : Activity> Context.openActivity(noinline extra: Intent.()
 }
 
 
-fun BaseActivity<*, *>.errorControl( errorModel: BaseErrorModel) {
-    extToast(errorModel.error.toString())
+fun BaseFragment<*, *>.errorControl( errorModel: BaseErrorModel) {
+    requireContext().extToast(errorModel.error.toString())
 }
 
 fun <T : View> T.isBackButton(context: Context) {
@@ -594,6 +598,33 @@ fun RecyclerView.applyDivider() {
         }
         return result
     }
+}
+
+private fun isValidEmail(email: String): Boolean {
+    return !TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches()
+}
+
+fun TextInputView.validateUsername(type: Int?): Boolean {
+
+    val username = text!!.trim().toString()
+    var isValid: Boolean = true
+
+    when (type) {
+        1 -> {
+            if (!isValidEmail(username)) {
+                isValid = false
+            }
+        }
+       2 -> {
+            if (username.isEmpty() || username.length < 6) {
+                isValid = false
+            }
+        }
+
+
+    }
+
+    return isValid
 }
 
 

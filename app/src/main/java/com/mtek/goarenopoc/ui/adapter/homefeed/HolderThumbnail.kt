@@ -15,6 +15,7 @@ import com.mtek.goarenopoc.data.model.MediaModel
 import com.mtek.goarenopoc.ui.MainActivity
 import com.mtek.goarenopoc.ui.fragment.bottom.FeedEditBottomDialog
 import com.mtek.goarenopoc.utils.*
+import com.mtek.goarenopoc.utils.manager.UserManager
 import de.hdodenhof.circleimageview.CircleImageView
 
 
@@ -57,7 +58,7 @@ class HolderThumbnail(parent: ViewGroup) : RecyclerView.ViewHolder(
         likeState.text = "   ${item.likes.toString()}"
         commentState.text = "   123"
 
-        if (item.user?.id != 7){
+        if (item.user?.id != UserManager.instance.user?.id){
             btnEdit.gone()
         }else{
              btnEdit.visible()

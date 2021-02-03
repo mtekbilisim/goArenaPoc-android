@@ -59,6 +59,7 @@
 
 
             <com.mtek.goarenopoc.module.textinput.TextInputView
+                android:id="@+id/txtEmail"
                 android:layout_marginTop="@dimen/_20ssp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -68,6 +69,7 @@
                 app:inputTitle="Kullanıcı Adı"/>
 
             <com.mtek.goarenopoc.module.textinput.TextInputView
+                android:id="@+id/txtXps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8ssp"
