@@ -16,6 +16,10 @@ class DashboardViewModel : BaseViewModel<DashboardRepository>(DashboardRepositor
         MutableLiveData()
     val responseTarget: LiveData<ExpectionResponseModel> = mutableTarget
 
+    private val mutableShopQuailty: MutableLiveData<DashboardResponseModel> =
+        MutableLiveData()
+    val responseShopQuailty: LiveData<DashboardResponseModel> = mutableShopQuailty
+
     fun getMontlySales() {
         sendRequest {
             repository.getMonthlySales().run {
@@ -36,12 +40,21 @@ class DashboardViewModel : BaseViewModel<DashboardRepository>(DashboardRepositor
         }
     }
 
-    fun getMontlyTargetById(id:Int) {
+    fun getMontlyTargetById(id: Int) {
         sendRequest {
             repository.getExpectationById(id).run {
                 mutableTarget.postValue(this)
                 errMsg?.postValue(errMsg.value)
                 return@run
+            }
+        }
+    }
+
+    fun getFilterByShopPersonel(id: Int) {
+        sendRequest {
+            repository.getDashboardFilterById(id).run {
+                mutableShopQuailty.postValue(this)
+                errMsg?.postValue(errMsg.value)
             }
         }
     }

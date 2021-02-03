@@ -85,18 +85,14 @@
 
             </LinearLayout>
 
-            <!--        <lecho.lib.hellocharts.view.LineChartView
-                        android:id="@+id/chartView"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_200sdp"
-                        android:layout_marginHorizontal="@dimen/_16sdp"
-                        android:layout_marginTop="@dimen/_16sdp" />
-
-                    <lecho.lib.hellocharts.view.ColumnChartView
-                        android:id="@+id/chart_bottom"
-                        android:layout_marginVertical="@dimen/_32sdp"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_200sdp"/>-->
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/barChartStaff"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_margin="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvSell" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

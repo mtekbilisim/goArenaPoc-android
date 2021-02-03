@@ -25,6 +25,7 @@ interface ApiService {
 
     @GET("dashboard")
     suspend fun getMonthlySales(): DashboardResponseModel
+
     //FeedTextUpdate
     @PUT("feeds/{feedId}")
     suspend fun requestUpdateFeed(
@@ -55,4 +56,7 @@ interface ApiService {
 
     @GET("dashboard/expectations/{id}")
     suspend fun getExpectationById(@Path("id") id: Int): ExpectionResponseModel
+
+    @GET("dashboard/")
+    suspend fun getDashboardFilterById(@Query("shop") id: Int): DashboardResponseModel
 }
