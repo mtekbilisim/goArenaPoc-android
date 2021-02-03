@@ -29,13 +29,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(LoginVi
 
     private val observerFeed: Observer<FeedResponseModel> = Observer {
         if (it != null) {
-            it.data as ArrayList<FeedModel>?
-            val bundle = Bundle()
-            bundle.putParcelableArrayList("data",  it.data as ArrayList<FeedModel>?)
             val data = Feed()
             data.data = it.data
             sharedViewModel.setFeedList(data)
-            findNavController().navigate(R.id.action_loginFragment_to_homeFragment,bundle)
+            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
 
         }
 

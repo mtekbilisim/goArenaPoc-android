@@ -46,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_16sdp"
-                android:text="Ürün Kategori"
+                android:text="Aylık Hedef"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_30ssp" />
 
@@ -96,6 +96,36 @@
 
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/barChartStaff"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_margin="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvSell" />
+        </LinearLayout>
+  <LinearLayout
+            android:id="@+id/month"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:background="@drawable/custom_chart_background"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_16sdp"
+                android:text="Aylık"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_30ssp" />
+
+
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/barMonth"
                 android:layout_width="match_parent"
                 android:layout_height="350dp"
                 android:layout_margin="12dp"

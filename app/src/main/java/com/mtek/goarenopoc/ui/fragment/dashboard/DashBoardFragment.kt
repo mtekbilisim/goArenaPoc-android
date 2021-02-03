@@ -56,7 +56,14 @@ class DashBoardFragment :
     private val observerPersonelStatistic: Observer<SalesResponseModel> = Observer {
         if (it != null) {
             for (i in it.data!!) {
-                i.employee?.let { it1 -> xAxisQualityValues.add(it1) }
+                if (i.employee?.contains("Adem")!!){
+                    xAxisQualityValues.add("Ocak")
+                }else if(i.employee?.contains("Ahmet")!!){
+                    xAxisQualityValues.add("Şubat")
+                }else if(i.employee?.contains("Mehmet")!!){
+                    xAxisQualityValues.add("Mart")
+                }
+
                 yQualityGroup2.add(BarEntry(1f, floatArrayOf(1.toFloat(), i.expectation.toFloat())))
                 yQualityGroup1.add(BarEntry(1f, floatArrayOf(1.toFloat(), i.sales.toFloat())))
             }
@@ -81,16 +88,6 @@ class DashBoardFragment :
             responseSales.observe(viewLifecycleOwner, observerSales)
             monthlySales.observe(viewLifecycleOwner, observerMontlySales)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        /* viewModel {
-
-             getMontlySales()
-             if (UserManager.instance.user?.employee_type == "MANAGER") getMontlyTargetById(3) else getMontlyTarget()
-
-         }*/
     }
 
     private fun setAdapterData() {
@@ -121,7 +118,7 @@ class DashBoardFragment :
         barDataSet1.setDrawValues(false)
 
         val barDataSet2 = BarDataSet(yValueGroup2, "")
-        barDataSet2.color = Color.YELLOW
+        barDataSet2.color = Color.RED
         barDataSet2.setDrawIcons(false)
         barDataSet2.setDrawValues(false)
 
@@ -146,7 +143,7 @@ class DashBoardFragment :
             )
         )
         legenedEntries.add(
-            LegendEntry("Gerçekleşen", Legend.LegendForm.SQUARE, 8f, 8f, null, Color.YELLOW)
+            LegendEntry("Gerçekleşen", Legend.LegendForm.SQUARE, 8f, 8f, null, Color.RED)
         )
 
         legend.setCustom(legenedEntries)

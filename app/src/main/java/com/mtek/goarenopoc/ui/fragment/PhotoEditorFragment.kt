@@ -369,7 +369,9 @@ class PhotoEditorFragment :
             ToolType.EMOJI -> showBottomSheetDialogFragment(mEmojiBSFragment)
             ToolType.STICKER -> showBottomSheetDialogFragment(mStickerBSFragment)
             ToolType.CROP -> {
+
                 val bundle = Bundle()
+
                 bundle.putString("SelectedImageUri", mSaveImageUri.toString())
                 findNavController().navigate(
                     R.id.action_photoEditorFragment_to_cropFragment2,

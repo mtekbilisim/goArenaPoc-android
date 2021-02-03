@@ -1,7 +1,9 @@
 package com.mtek.goarenopoc.ui.fragment.home
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -23,48 +25,43 @@ import com.mtek.goarenopoc.utils.setSafeOnClickListener
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(HomeViewModel::class) {
 
 
-    override fun getViewBinding() =  FragmentHomeBinding.inflate(layoutInflater)
+    override fun getViewBinding() = FragmentHomeBinding.inflate(layoutInflater)
 
     private var homeAdapter: HomeFeedAdapter? = null
     lateinit var sharedViewModel: SharedViewModel
-    private var responseFeedList : ArrayList<FeedModel> = arrayListOf()
+    private var responseFeedList: ArrayList<FeedModel> = arrayListOf()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
-    }
 
     private val observerFeed: Observer<FeedResponseModel> = Observer {
         if (it != null) {
             responseFeedList?.clear()
             responseFeedList = (it.data as ArrayList<FeedModel>?)!!
-            val data = Feed()
-            data.data = it.data
-            sharedViewModel.setFeedList(data)
             homeAdapter?.setList(responseFeedList)
             binding.swipeContainer.isRefreshing = false
         }
 
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel {
+            feedResponse.observe(viewLifecycleOwner, observerFeed)
+        }
+        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
         (requireContext() as MainActivity).showBottomNav()
+
+
         init()
         setAdapter()
         clickFun()
     }
 
     private fun init() {
-        viewModel {
-            feedResponse.observe(viewLifecycleOwner, observerFeed)
-        }
         sharedViewModel.getFeedList().observe(viewLifecycleOwner,{
-            if (it != null){
-                responseFeedList = it.data as ArrayList<FeedModel>
-                homeAdapter?.setList(responseFeedList)
-            }
+            homeAdapter?.setList(it.data as ArrayList<FeedModel>?)
         })
+        
 
     }
 
@@ -87,6 +84,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(HomeViewMo
     }
 
     private fun setAdapter() {
+
         homeAdapter = HomeFeedAdapter(responseFeedList as ArrayList<FeedModel>) {
             if (it.isDeleteFunWork) {
                 viewModel.sendRequestDelete(it.id.toString())
@@ -99,7 +97,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(HomeViewMo
         }.also {
             it.applyDivider()
         }
-
+        homeAdapter?.setList(responseFeedList)
     }
 
 
