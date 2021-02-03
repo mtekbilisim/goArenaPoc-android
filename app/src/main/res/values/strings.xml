@@ -21,6 +21,7 @@
     <string name="app_intent_name">PhotoEditor</string>
     <string name="msg_save_image_to_share">Please save image to share</string>
     <string name="msg_share_image">Share Image</string>
-    <string name="sendPost">Gönder</string>>
+    <string name="sendPost">Gönder</string>
+    <string name="e_mail_error_message">Geçerli E-mail bilgisi giriniz</string>>
 
 </resources>

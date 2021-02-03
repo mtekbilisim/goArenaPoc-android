@@ -11,6 +11,7 @@ import com.mtek.goarenopoc.ui.MainActivity
 import com.mtek.goarenopoc.ui.fragment.bottom.FeedEditBottomDialog
 import com.mtek.goarenopoc.ui.fragment.home.HomeFragment
 import com.mtek.goarenopoc.utils.*
+import com.mtek.goarenopoc.utils.manager.UserManager
 import de.hdodenhof.circleimageview.CircleImageView
 
 class HolderOnlyText(parent: ViewGroup) : RecyclerView.ViewHolder(
@@ -52,10 +53,11 @@ class HolderOnlyText(parent: ViewGroup) : RecyclerView.ViewHolder(
               onItemClickListener.invoke(item)
             }.show((itemView.context as MainActivity).supportFragmentManager,"Detail")
         }
-        if (item.user?.id != 7){
+        if (item.user?.id != UserManager.instance.user?.id){
             btnEdit.gone()
         }else{
             btnEdit.visible()
         }
+
     }
 }

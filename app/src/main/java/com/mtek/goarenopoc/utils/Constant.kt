@@ -31,9 +31,8 @@ object Constants {
     val GALLERY_REQUEST_CODE = 7502
     val DOCUMENTS_REQUEST_CODE = 7503
     val TURKISH = Locale.forLanguageTag("tr")
-    var ACCESS_TOKEN: String? = null
-    var CURRENT_CONTEXT: Context? = null
-     var filterUriStr = emptyString()
+    var ACCESS_TOKEN: String? = emptyString()
+    var TOKEN_TYPE = emptyString()
 
 
 

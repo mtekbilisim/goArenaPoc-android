@@ -42,11 +42,11 @@ abstract class BaseFragment<VB : ViewBinding, out BVM : BaseViewModel<BaseReposi
     }
 
     protected val observerErrMsg: Observer<BaseErrorModel> = Observer {
-        if (it != null){
+
             it?.let {
-                (requireContext() as MainActivity).errorControl(it)
+                errorControl(it)
             }
-        }
+
 
     }
 
