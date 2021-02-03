@@ -64,45 +64,60 @@
             android:id="@+id/layoutDataGrid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:weightSum="4"
-            app:layout_constraintTop_toBottomOf="@id/layout">
+            app:layout_constraintTop_toBottomOf="@id/layout"
+            android:orientation="vertical">
+            <LinearLayout
 
-            <TextView
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textSize="@dimen/_16sdp" />
+                android:layout_marginTop="@dimen/_16sdp"
+                android:weightSum="4"
+                app:layout_constraintTop_toBottomOf="@id/layout">
 
-            <TextView
-                android:id="@+id/txtProductGroup"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Ürün Grubu"
-                android:textSize="@dimen/_16sdp" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="@dimen/_16sdp" />
 
-            <TextView
-                android:id="@+id/txtProduct"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Ürün"
-                android:textSize="@dimen/_16sdp" />
+                <TextView
+                    android:id="@+id/txtProductGroup"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Ürün Grubu"
+                    android:textSize="@dimen/_16sdp" />
 
-            <TextView
-                android:id="@+id/txtSell"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Satış"
-                android:textSize="@dimen/_16sdp" />
+                <TextView
+                    android:id="@+id/txtProduct"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Ürün"
+                    android:textSize="@dimen/_16sdp" />
+
+                <TextView
+                    android:id="@+id/txtSell"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Satış"
+                    android:textSize="@dimen/_16sdp" />
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray"/>
+
 
         </LinearLayout>
+
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -111,6 +126,7 @@
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/layoutDataGrid"
+            android:layout_marginBottom="@dimen/_12ssp"
             tools:listitem="@layout/row_item_dashbroard_data_grid" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

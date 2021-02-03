@@ -2,8 +2,10 @@ package com.mtek.goarenopoc.ui.adapter.homefeed
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -17,6 +19,7 @@ import com.mtek.goarenopoc.ui.fragment.bottom.FeedEditBottomDialog
 import com.mtek.goarenopoc.utils.*
 import com.mtek.goarenopoc.utils.manager.UserManager
 import de.hdodenhof.circleimageview.CircleImageView
+import java.util.*
 
 
 class HolderThumbnail(parent: ViewGroup) : RecyclerView.ViewHolder(
@@ -50,14 +53,16 @@ class HolderThumbnail(parent: ViewGroup) : RecyclerView.ViewHolder(
                 item.isDeleteFunWork = true
                 onItemClickListener.invoke(item)
 
-            }.show((itemView.context as MainActivity).supportFragmentManager,"Detail")
+            }.show((itemView.context as MainActivity).supportFragmentManager, "Detail")
         }
         userName.text = item.user?.username
-        date.text =  DateManager.formatDate(item.postDate,"MMM dd.mm.yyyy")
+        date.text =  DateManager.formatDate(item.postDate, "MMMM dd.MM.yyyy")
         txtText.text = item.title
-        likeState.text = "   ${item.likes.toString()}"
-        commentState.text = "   123"
 
+        val r = Random()
+        val i1: Int = r.nextInt(80) + 65
+        commentState.text = "   ${item.comments?.size}"
+        likeState.text = "   ${i1.toString()}"
         if (item.user?.id != UserManager.instance.user?.id){
             btnEdit.gone()
         }else{
@@ -67,13 +72,19 @@ class HolderThumbnail(parent: ViewGroup) : RecyclerView.ViewHolder(
                 rc?.adapter = BaseAdapter<MediaModel>(
                     itemView.context, R.layout.row_item_thumnail_layout,
                     item.medias
-                ) { v, item, position ->
+                ) { v, items, position ->
                     val imageView = v?.findViewById(R.id.imageView) as AppCompatImageView
+                    val rootView = v?.findViewById(R.id.rootView) as CardView
+                    if (item.medias?.size == 1){
+                        val layoutParams = rootView.layoutParams
+                        layoutParams.width = MATCH_PARENT
+                        rootView.layoutParams = layoutParams
+                    }
                     val options: RequestOptions = RequestOptions().centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        Glide.with (itemView.context).load(
-                        item.uri
-                    ).apply(options).thumbnail(0.1f).into(imageView)
+                        Glide.with(itemView.context).load(
+                            items.uri
+                        ).apply(options).thumbnail(0.1f).into(imageView)
                    // loadImage(imageView, item.uri, getProgressDrawable(imageView.context))
 
                 }

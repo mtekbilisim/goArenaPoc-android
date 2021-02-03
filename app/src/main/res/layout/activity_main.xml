@@ -20,14 +20,13 @@
         android:id="@+id/bottom_app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipChildren="true"
+        android:clipChildren="false"
         app:itemTextAppearanceActive="@style/BottomNavigation.ActiveItemTextAppearance"
         app:itemHorizontalTranslationEnabled="false"
         app:itemIconTint="@drawable/nav_item_color_state"
         app:itemTextColor="@drawable/nav_item_color_state"
         app:labelVisibilityMode="labeled"
         android:background="@color/colorPrimary"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
         app:menu="@menu/bottom_menu" >
 
 

@@ -24,7 +24,7 @@ class DashboardViewModel : BaseViewModel<DashboardRepository>(DashboardRepositor
         sendRequest {
             repository.getMonthlySales().run {
                 mutableMonthlySales.postValue(this)
-                errMsg?.postValue(errMsg.value)
+                errMsg?.postValue(errMsg?.value)
                 return@run
             }
         }
@@ -34,7 +34,7 @@ class DashboardViewModel : BaseViewModel<DashboardRepository>(DashboardRepositor
         sendRequest {
             repository.getExpectation().run {
                 mutableTarget.postValue(this)
-                errMsg?.postValue(errMsg.value)
+                errMsg?.postValue(errMsg?.value)
                 return@run
             }
         }
@@ -44,7 +44,7 @@ class DashboardViewModel : BaseViewModel<DashboardRepository>(DashboardRepositor
         sendRequest {
             repository.getExpectationById(id).run {
                 mutableTarget.postValue(this)
-                errMsg?.postValue(errMsg.value)
+                errMsg?.postValue(errMsg?.value)
                 return@run
             }
         }
@@ -54,7 +54,7 @@ class DashboardViewModel : BaseViewModel<DashboardRepository>(DashboardRepositor
         sendRequest {
             repository.getDashboardFilterById(id).run {
                 mutableShopQuailty.postValue(this)
-                errMsg?.postValue(errMsg.value)
+                errMsg?.postValue(errMsg?.value)
             }
         }
     }

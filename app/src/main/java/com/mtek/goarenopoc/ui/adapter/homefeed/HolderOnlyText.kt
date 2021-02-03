@@ -13,6 +13,7 @@ import com.mtek.goarenopoc.ui.fragment.home.HomeFragment
 import com.mtek.goarenopoc.utils.*
 import com.mtek.goarenopoc.utils.manager.UserManager
 import de.hdodenhof.circleimageview.CircleImageView
+import java.util.*
 
 class HolderOnlyText(parent: ViewGroup) : RecyclerView.ViewHolder(
     LayoutInflater.from(parent.context).inflate(
@@ -40,10 +41,13 @@ class HolderOnlyText(parent: ViewGroup) : RecyclerView.ViewHolder(
             getProgressDrawable(profilePhoto.context)
         )
         userName.text = item.user?.username
-        date.text =  DateManager.formatDate(item.postDate,"MMM dd.mm.yyyy")
+        date.text =  DateManager.formatDate(item.postDate, "MMMM dd.MM.yyyy")
         txtText.text = item.title
-        likeState.text = "   ${item.likes.toString()}"
-        commentState.text = "   123"
+
+        val r = Random()
+        val i1: Int = r.nextInt(80) + 65
+        commentState.text = "   ${item.comments?.size}"
+        likeState.text = "   ${i1}"
         itemView.setOnClickListener {
             onItemClickListener(item)
         }

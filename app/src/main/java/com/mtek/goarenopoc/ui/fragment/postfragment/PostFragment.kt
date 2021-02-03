@@ -114,6 +114,7 @@ class PostFragment : BaseFragment<FragmentPostBinding, PostViewModel>(PostViewMo
     }
 
     private fun updateUI() {
+        loadImageCircle(binding.profileImage,UserManager.instance.user?.avatar, getProgressDrawable(binding.profileImage.context))
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
         sharedViewModel.getFeedUpdateIdModel().observe(viewLifecycleOwner,{
@@ -122,6 +123,7 @@ class PostFragment : BaseFragment<FragmentPostBinding, PostViewModel>(PostViewMo
                 binding.etContent.requestFocus()
                 updateFeed = true
                 updateFeedModel = it
+                return@observe
             }
         })
 

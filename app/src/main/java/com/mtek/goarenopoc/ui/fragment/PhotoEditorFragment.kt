@@ -230,7 +230,7 @@ class PhotoEditorFragment :
                 mPhotoEditor.saveAsFile(file.absolutePath, saveSettings, object : OnSaveListener {
                     override fun onSuccess(imagePath: String) {
                         hideLoading()
-                        requireContext().extToast("Image Saved Successfully")
+                     //   requireContext().extToast("Image Saved Successfully")
                         mSaveImageUri = Uri.fromFile(File(imagePath))
                         binding.photoEditorView.source.setImageURI(mSaveImageUri)
                         val bundle = Bundle()
@@ -243,7 +243,7 @@ class PhotoEditorFragment :
 
                     override fun onFailure(exception: Exception) {
                         hideLoading()
-                        requireContext().extToast("Failed to save Image")
+                        //requireContext().extToast("Failed to save Image")
                     }
                 })
             } catch (e: IOException) {

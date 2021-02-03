@@ -38,9 +38,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, SplashViewModel>(SplashVi
 
     }
 
-     fun selectHome(){
-        binding.bottomAppBar.selectedItemId = R.id.homeFragment
-    }
+
 
 
     private fun setupBottomNavigationBar() {

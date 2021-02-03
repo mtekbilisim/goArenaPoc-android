@@ -41,47 +41,14 @@ class FeedEditBottomDialog(var feedModel: FeedModel,var onItemClickListener : ()
         }
         bottomSheetBehavior?.peekHeight = BottomSheetBehavior.PEEK_HEIGHT_AUTO
         binding.root.minimumHeight = ((Resources.getSystem().displayMetrics.heightPixels) / 5)
-        bottomSheetBehavior?.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    BottomSheetBehavior.STATE_DRAGGING -> {
-
-                    }
-                    BottomSheetBehavior.STATE_EXPANDED -> {
-
-                    }
-
-                    BottomSheetBehavior.STATE_HALF_EXPANDED -> {
-
-                    }
-                    else -> {
-
-                    }
-
-
-                }
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
-            }
-        })
         clickFun()
-        updateUI()
 
         return bottomSheet
     }
 
-    private fun updateUI() {
-        sharedViewModel.setUpdateFeedModel(feedModel)
-
-    }
-
-
-
     private fun clickFun() {
         binding.txtModify.setSafeOnClickListener {
+            sharedViewModel.setUpdateFeedModel(feedModel)
             findNavController().navigate(R.id.postFragment2)
             bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_HIDDEN
         }
@@ -90,10 +57,6 @@ class FeedEditBottomDialog(var feedModel: FeedModel,var onItemClickListener : ()
             onItemClickListener.invoke()
             bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_HIDDEN
         }
-
-//        binding.closeDialog.setSafeOnClickListener {
-//            bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_HIDDEN
-//        }
     }
 
     override fun onStart() {

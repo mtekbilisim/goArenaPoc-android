@@ -65,6 +65,9 @@ buildscript {
         fragmentContainer = "1.2.5"
         mp_android_chart = "v3.0.2"
         hello_chart = "v1.5.8"
+        photo_editor = "1.1.0"
+        crop ="1.1.8"
+        swipe_reflesh = "1.0.0"
 
         androidxsupportDependencies = [
                 kotlin_std         : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
@@ -132,6 +135,9 @@ buildscript {
                 lottie             : "com.airbnb.android:lottie:$lottieVersion",
                 mp_chart           : "com.github.Philjay:MPAndroidChart:$mp_android_chart",
                 hello_chart        : "com.github.lecho:hellocharts-android:$hello_chart",
+                photo_editor : "ja.burhanrashid52:photoeditor:$photo_editor",
+                crop : "com.isseiaoki:simplecropview:$crop",
+                swipe_reflesh : "androidx.swiperefreshlayout:swiperefreshlayout:$swipe_reflesh",
 
         ]
 

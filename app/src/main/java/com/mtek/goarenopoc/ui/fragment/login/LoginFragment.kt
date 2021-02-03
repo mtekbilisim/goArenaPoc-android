@@ -4,15 +4,20 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.mtek.BaseApp
 import com.mtek.goarenopoc.R
 import com.mtek.goarenopoc.base.BaseActivity
 import com.mtek.goarenopoc.base.BaseFragment
+import com.mtek.goarenopoc.data.model.Feed
+import com.mtek.goarenopoc.data.model.FeedModel
 import com.mtek.goarenopoc.data.model.TokenModel
 import com.mtek.goarenopoc.data.network.request.LoginRequestModel
+import com.mtek.goarenopoc.data.network.response.FeedResponseModel
 import com.mtek.goarenopoc.data.network.response.UserResponseModel
 import com.mtek.goarenopoc.databinding.FragmentLoginBinding
+import com.mtek.goarenopoc.ui.fragment.SharedViewModel
 import com.mtek.goarenopoc.utils.*
 import com.mtek.goarenopoc.utils.manager.LocalDataManager
 import com.mtek.goarenopoc.utils.manager.UserManager
@@ -21,6 +26,20 @@ import com.mtek.goarenopoc.utils.manager.UserManager
 class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(LoginViewModel::class) {
 
     override fun getViewBinding() = FragmentLoginBinding.inflate(layoutInflater)
+
+    private val observerFeed: Observer<FeedResponseModel> = Observer {
+        if (it != null) {
+            it.data as ArrayList<FeedModel>?
+            val bundle = Bundle()
+            bundle.putParcelableArrayList("data",  it.data as ArrayList<FeedModel>?)
+            val data = Feed()
+            data.data = it.data
+            sharedViewModel.setFeedList(data)
+            findNavController().navigate(R.id.action_loginFragment_to_homeFragment,bundle)
+
+        }
+
+    }
 
     private val observerToken: Observer<TokenModel> = Observer {
         if (it != null) {
@@ -55,8 +74,16 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(LoginVi
     private val observerInformation: Observer<UserResponseModel> = Observer {
         if (it != null) {
             UserManager.instance.user = it.data
-            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+            viewModel.senRequestVFeed()
+
         }
+    }
+
+    lateinit var sharedViewModel: SharedViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,6 +91,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(LoginVi
         viewModel {
             responseToken.observe(viewLifecycleOwner, observerToken)
             responseUserInformation.observe(viewLifecycleOwner, observerInformation)
+            feedResponse.observe(viewLifecycleOwner,observerFeed)
         }
         clickFun()
         rememberControl()

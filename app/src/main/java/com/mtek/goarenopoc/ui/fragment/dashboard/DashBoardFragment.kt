@@ -66,7 +66,7 @@ class DashBoardFragment :
     private val observerTarget: Observer<ExpectionResponseModel> = Observer {
         if (!it.data.isNullOrEmpty()) {
             yValueGroup1.clear()
-            val dataTarget = it.data.groupBy { expection ->
+            val dataTarget = it.data!!.groupBy { expection ->
                 expection.product_group
             }
             for (i in dataTarget) {
@@ -79,7 +79,7 @@ class DashBoardFragment :
                 yValueGroup1.add(BarEntry(1f, floatArrayOf(1.toFloat(), quantity.toFloat())))
             }
 
-            val shopQualityPerson = it.data.groupBy { shopPerson ->
+            val shopQualityPerson = it.data!!.groupBy { shopPerson ->
                 shopPerson.user?.first_name
             }
             for (k in shopQualityPerson) {
@@ -96,7 +96,7 @@ class DashBoardFragment :
     private val observerShopQuality: Observer<DashboardResponseModel> = Observer {
         if (!it.data.isNullOrEmpty()) {
 
-            val dataQuality = it.data.groupBy { shopPerson ->
+            val dataQuality = it.data!!.groupBy { shopPerson ->
                 shopPerson.user?.first_name
             }
             for (i in dataQuality) {
@@ -115,23 +115,20 @@ class DashBoardFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel {
-            monthlySales.observe(viewLifecycleOwner, observerMontlySales)
-            responseTarget.observe(viewLifecycleOwner, observerTarget)
-            responseShopQuailty.observe(viewLifecycleOwner, observerShopQuality)
-            getFilterByShopPersonel(3)
-        }
+//        viewModel {
+//            monthlySales.observe(viewLifecycleOwner, observerMontlySales)
+//            responseTarget.observe(viewLifecycleOwner, observerTarget)
+//            responseShopQuailty.observe(viewLifecycleOwner, observerShopQuality)
+//            getFilterByShopPersonel(3)
+//        }
+//        viewModel {
+//            getMontlySales()
+//            if (UserManager.instance.user?.employee_type == "MANAGER") getMontlyTargetById(3) else getMontlyTarget()
+//
+//        }
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel {
 
-            getMontlySales()
-            if (UserManager.instance.user?.employee_type == "MANAGER") getMontlyTargetById(3) else getMontlyTarget()
-
-        }
-    }
 
     private fun setAdapterData() {
         adapter =
