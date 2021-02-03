@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.components.XAxis
@@ -19,14 +18,7 @@ import com.mtek.goarenopoc.base.BaseFragment
 import com.mtek.goarenopoc.data.network.response.DashboardResponseModel
 import com.mtek.goarenopoc.data.network.response.ExpectionResponseModel
 import com.mtek.goarenopoc.databinding.FragmentDashBoardBinding
-import com.mtek.goarenopoc.utils.Constants
 import com.mtek.goarenopoc.utils.flag_error
-import lecho.lib.hellocharts.gesture.ZoomType
-import lecho.lib.hellocharts.listener.ColumnChartOnValueSelectListener
-import lecho.lib.hellocharts.model.*
-import lecho.lib.hellocharts.util.ChartUtils
-import lecho.lib.hellocharts.view.ColumnChartView
-import lecho.lib.hellocharts.view.LineChartView
 
 class DashBoardFragment :
     BaseFragment<FragmentDashBoardBinding, DashboardViewModel>(DashboardViewModel::class) {
@@ -35,9 +27,13 @@ class DashBoardFragment :
     private val yValueGroup2: ArrayList<BarEntry> = arrayListOf()
     private val xAxisValues: ArrayList<String> = arrayListOf()
 
+    private val yQualityGroup1: ArrayList<BarEntry> = arrayListOf()
+    private val yQualityGroup2: ArrayList<BarEntry> = arrayListOf()
+    private val xAxisQualityValues: ArrayList<String> = arrayListOf()
+
     private val observerMontlySales: Observer<DashboardResponseModel> = Observer {
         if (it != null) {
-            Log.e("Donen Hedef Response", "${it.data}")
+            yValueGroup2.clear()
             val dataSales = it.data?.groupBy { productGroup ->
                 productGroup.product_group
             }
@@ -47,6 +43,7 @@ class DashBoardFragment :
                 for (j in i.value) {
                     amounts += j.quantity
                 }
+
                 yValueGroup2.add(BarEntry(1f, floatArrayOf(1.toFloat(), amounts.toFloat())))
             }
             populateGraphData()
@@ -55,8 +52,9 @@ class DashBoardFragment :
 
     private val observerTarget: Observer<ExpectionResponseModel> = Observer {
         if (it != null) {
-            if (it.data!![0].user?.employee_type == "MANAGER")viewModel.getMontlyTargetById(7) else viewModel.getMontlyTarget()
-            val dataTarget = it.data.groupBy { expection ->
+            //if (it.data!![0].user?.employee_type == "MANAGER") viewModel.getMontlyTargetById(7) else viewModel.getMontlyTarget()
+            yValueGroup1.clear()
+            val dataTarget = it.data!!.groupBy { expection ->
                 expection.product_group
             }
             for (i in dataTarget) {
@@ -65,19 +63,54 @@ class DashBoardFragment :
                 for (j in i.value) {
                     quantity += j.quantity
                 }
+
                 yValueGroup1.add(BarEntry(1f, floatArrayOf(1.toFloat(), quantity.toFloat())))
             }
+
+            val shopQualityPerson = it.data.groupBy { shopPerson ->
+                shopPerson.user?.first_name
+            }
+            for (k in shopQualityPerson) {
+                k.key?.let { it1 -> xAxisQualityValues.add(it1) }
+                var personTarget = 0
+                for (x in k.value) {
+                    personTarget += x.quantity
+                }
+                yQualityGroup1.add(BarEntry(1f, floatArrayOf(1.toFloat(), personTarget.toFloat())))
+            }
+        }
+    }
+
+    private val observerShopQuality: Observer<DashboardResponseModel> = Observer {
+        if (it != null) {
+            it.data
+            val dataQuality = it.data?.groupBy { shopPerson ->
+                shopPerson.user?.first_name
+            }
+            for (i in dataQuality!!) {
+                i.key?.let { it1 -> xAxisQualityValues.add(it1) }
+                var personQuality = 0
+                for (j in i.value) {
+                    personQuality += j.quantity
+                }
+
+                yQualityGroup2.add(BarEntry(1f, floatArrayOf(2.toFloat(), personQuality.toFloat())))
+            }
+            PersonelGraphData()
         }
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getFilterByShopPersonel(3)
         viewModel {
-            getMontlySales()
-            getMontlyTarget()
+            getFilterByShopPersonel(3)
             monthlySales.observe(viewLifecycleOwner, observerMontlySales)
             responseTarget.observe(viewLifecycleOwner, observerTarget)
+            responseShopQuailty.observe(viewLifecycleOwner, observerShopQuality)
+            getMontlySales()
+            getMontlyTarget()
         }
 
     }
@@ -163,110 +196,21 @@ class DashBoardFragment :
 
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        flag_error("onAttach Dashboard")
-    }
+    private fun PersonelGraphData() {
 
-    override fun onDetach() {
-        super.onDetach()
-        flag_error("onDetach Dashboard")
-    }
-
-    override fun getViewBinding() = FragmentDashBoardBinding.inflate(layoutInflater)
-
-
-}
-
-/*
-       private var montlySalesList: ArrayList<DashBoardDataModel>? = arrayListOf()
-    private val months = arrayListOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul")
-    private val days = arrayListOf("Mon", "Tue", "Wen", "Thu", "Fri", "Sat", "Sun")
-    private var lineData: LineChartData? = null
-    private var columnData: ColumnChartData? = null
-
-   private fun generateInitialLineData() {
-        val numValues = 6
-        val axisValues: ArrayList<AxisValue> = arrayListOf()
-        val values: ArrayList<PointValue> = arrayListOf()
-
-        for (i in 0..numValues) {
-            values.add(PointValue(i.toFloat(), 0f))
-            axisValues.add(AxisValue(i.toFloat()).setLabel(days[i]))
-        }
-
-        val line = Line(values)
-        line.setColor(ChartUtils.COLOR_GREEN).isCubic = true
-
-        val lines: ArrayList<Line> = arrayListOf()
-        lines.add(line)
-
-        lineData = LineChartData(lines)
-        lineData!!.axisXBottom = Axis(axisValues).setHasLines(true)
-        lineData!!.axisYLeft = Axis().setHasLines(true).setMaxLabelChars(3)
-
-        binding.chartView.lineChartData = lineData
-
-        binding.chartView.isViewportCalculationEnabled = false
-
-        val v = Viewport(0f, 110f, 6f, 0f)
-        binding.chartView.maximumViewport = v
-        binding.chartView.currentViewport = v
-
-        binding.chartView.zoomType = ZoomType.HORIZONTAL
-    }
-
-    private fun populateGraphData() {
-
-        val groupSpace = 0.1f // her 2 item arasi uzaklik
-
-        val xAxisValues = ArrayList<String>()
-        xAxisValues.add("Aksesuar")
-        xAxisValues.add("Telko")
-        xAxisValues.add("Cihaz")
-
-        val yValueGroup1 = ArrayList<BarEntry>()
-        val yValueGroup2 = ArrayList<BarEntry>()
-
-        val barDataSet1: BarDataSet
-        val barDataSet2: BarDataSet
-
-
-        yValueGroup1.add(BarEntry(1f, floatArrayOf(9.toFloat(), 3.toFloat())))
-        yValueGroup2.add(BarEntry(1f, floatArrayOf(2.toFloat(), 7.toFloat())))
-
-        yValueGroup1.add(BarEntry(2f, floatArrayOf(3.toFloat(), 3.toFloat())))
-        yValueGroup2.add(BarEntry(2f, floatArrayOf(4.toFloat(), 15.toFloat())))
-
-        yValueGroup1.add(BarEntry(3f, floatArrayOf(3.toFloat(), 3.toFloat())))
-        yValueGroup2.add(BarEntry(3f, floatArrayOf(4.toFloat(), 15.toFloat())))
-
-
-        barDataSet1 = BarDataSet(yValueGroup1, "")
-        barDataSet1.color = Color.LTGRAY
+        val barDataSet1 = BarDataSet(yQualityGroup1, "")
+        barDataSet1.color = Color.BLUE
         barDataSet1.setDrawIcons(false)
         barDataSet1.setDrawValues(false)
 
-        barDataSet2 = BarDataSet(yValueGroup2, "")
+        val barDataSet2 = BarDataSet(yQualityGroup2, "")
         barDataSet2.color = Color.YELLOW
         barDataSet2.setDrawIcons(false)
         barDataSet2.setDrawValues(false)
 
         val barData = BarData(barDataSet1, barDataSet2)
 
-        binding.barChart.description.isEnabled = false
-        binding.barChart.description.textSize = 0f
-        barData.setValueFormatter(LargeValueFormatter())
-        binding.barChart.data = barData
-        binding.barChart.xAxis.axisMinimum = 0f
-        binding.barChart.xAxis.axisMaximum = 12f
-        binding.barChart.setFitBars(true)
-        binding.barChart.data.isHighlightEnabled = false
-        binding.barChart.animateXY(1500, 1500)
-        binding.barChart.invalidate()
-
-        // set bar label
-        val legend = binding.barChart.legend
+        val legend = binding.barChartStaff.legend
         legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
         legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
         legend.orientation = Legend.LegendOrientation.HORIZONTAL
@@ -281,7 +225,7 @@ class DashBoardFragment :
                 8f,
                 8f,
                 null,
-                Color.LTGRAY
+                Color.BLUE
             )
         )
         legenedEntries.add(
@@ -295,60 +239,56 @@ class DashBoardFragment :
         legend.yEntrySpace = 0f
         legend.textSize = 10f
 
-        val xAxis = binding.barChart.xAxis
+        val xAxis = binding.barChartStaff.xAxis
         xAxis.setLabelCount(6, true)
         xAxis.isGranularityEnabled = true
         xAxis.setCenterAxisLabels(true)
-        xAxis.yOffset = 2f
-        xAxis.xOffset = 2f
-        xAxis.textSize = 5f
+        xAxis.yOffset = 0f
+        xAxis.xOffset = 0f
+        xAxis.textSize = 15f
         xAxis.setDrawGridLines(false)
-        xAxis.textSize = 12f
+
         xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
-        xAxis.labelCount = 12
-        xAxis.xOffset = 1f
-        xAxis.yOffset = 10f
-        xAxis.mAxisMaximum = 12f
-        xAxis.mLabelWidth = 15
-        xAxis.setCenterAxisLabels(true)
-        xAxis.setAvoidFirstLastClipping(true)
-        xAxis.spaceMin = 4f
-        xAxis.spaceMax = 4f
+        xAxis.valueFormatter = IndexAxisValueFormatter(xAxisQualityValues)
+        xAxis.textColor = Color.WHITE
+        binding.barChartStaff.isDragEnabled = true
+        binding.barChartStaff.axisRight.isEnabled = false
+        binding.barChartStaff.setScaleEnabled(true)
 
-        binding.barChart.setVisibleXRangeMaximum(12f)
-        binding.barChart.setVisibleXRangeMinimum(12f)
-        binding.barChart.isDragEnabled = true
-        binding.barChart.axisRight.isEnabled = false
-        binding.barChart.setScaleEnabled(true)
-
-        val leftAxis = binding.barChart.axisLeft
+        //Soldaki alan
+        val leftAxis = binding.barChartStaff.axisLeft
         leftAxis.valueFormatter = LargeValueFormatter()
         leftAxis.setDrawGridLines(false) // ekrani kare / dikdortgen seklinde ayirior grid olarak hersey daha net
         leftAxis.spaceTop = 1f
         leftAxis.axisMinimum = 0f
 
-        binding.barChart.data = barData
-        binding.barChart.setVisibleXRange(1f, 12f)
+        binding.barChartStaff.data = barData
 
-        if (xAxisValues.count() == 6) {
-            binding.barChart.barData.barWidth = 0.11f
-            binding.barChart.xAxis.axisMaximum =
-                0f + binding.barChart.barData.getGroupWidth(0.4f, 0.1f) * 15
-            binding.barChart.xAxis.axisMinimum = 0f
-            binding.barChart.xAxis.axisMaximum = 6f
-            binding.barChart.groupBars(0f, 0.4f, 0f) // 2'li barlar arasindaki uzaklik
-            binding.barChart.data.isHighlightEnabled = false
-            binding.barChart.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
-        } else {
-            binding.barChart.barData.barWidth = 0.11f
-            binding.barChart.xAxis.axisMaximum =
-                0f + binding.barChart.barData.getGroupWidth(0.4f, 0.03f) * 7
-            binding.barChart.xAxis.axisMinimum = 0f
-            binding.barChart.xAxis.axisMaximum = 7f
-            binding.barChart.groupBars(0f, 0.65f, 0.07f)
-            binding.barChart.data.isHighlightEnabled = false
-            binding.barChart.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
-        }
-        binding.barChart.invalidate()
-    }*/
+        binding.barChartStaff.barData.barWidth = 0.4f
+        binding.barChartStaff.xAxis.axisMaximum =
+            0f + binding.barChartStaff.barData.getGroupWidth(0.1f, 0.05f) * 3 //kac grup yazin varsa
+        binding.barChartStaff.xAxis.axisMinimum = 0f
+        binding.barChartStaff.description.text = ""
+        binding.barChartStaff.xAxis.axisMaximum = 3f
+        binding.barChartStaff.groupBars(0f, 0.1f, 0.05f)
+        binding.barChartStaff.data.isHighlightEnabled = false
+        binding.barChartStaff.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisQualityValues)
+
+        binding.barChartStaff.invalidate()
+
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        flag_error("onAttach Dashboard")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        flag_error("onDetach Dashboard")
+    }
+
+    override fun getViewBinding() = FragmentDashBoardBinding.inflate(layoutInflater)
+
+
+}

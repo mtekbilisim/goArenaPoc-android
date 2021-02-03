@@ -4,6 +4,11 @@ package com.mtek.goarenopoc.data.di
 
 import com.mtek.goarenopoc.data.network.api.ApiService
 import com.mtek.goarenopoc.data.repository.*
+import com.mtek.goarenopoc.data.repository.HomeRepository
+import com.mtek.goarenopoc.data.repository.LoginRepository
+import com.mtek.goarenopoc.data.repository.PostRepository
+import com.mtek.goarenopoc.data.repository.DashboardRepository
+import com.mtek.goarenopoc.data.repository.SplashRepository
 import org.koin.core.qualifier.TypeQualifier
 import org.koin.dsl.module
 import retrofit2.Retrofit
