@@ -18,66 +18,134 @@ import com.mtek.goarenopoc.utils.manager.LocalDataManager
 import com.mtek.goarenopoc.utils.manager.UserManager
 
 
-class LoginFragment : BaseFragment<FragmentLoginBinding,LoginViewModel>(LoginViewModel::class) {
+class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(LoginViewModel::class) {
 
     override fun getViewBinding() = FragmentLoginBinding.inflate(layoutInflater)
 
-    private val observerToken : Observer<TokenModel> = Observer{
-        if (it != null){
+    private val observerToken: Observer<TokenModel> = Observer {
+        if (it != null) {
             Constants.ACCESS_TOKEN = it.access_token
-            Constants.TOKEN_TYPE = it.tokenType.toString()
-            if (LocalDataManager.instance.getSharedPreferenceBoolean(BaseApp.appContext,Constants.SAVE_INFORMATION,false)){
-                LocalDataManager.instance.setSharedPreferenceString(BaseApp.appContext, Constants.EMAIL,  binding.txtEmail.text)
-                LocalDataManager.instance.setSharedPreferenceString(BaseApp.appContext, Constants.XPS, binding.txtXps.text)
+            Constants.TOKEN_TYPE = it.token_type!!
+            if (LocalDataManager.instance.getSharedPreferenceBoolean(
+                    BaseApp.appContext,
+                    Constants.SAVE_INFORMATION,
+                    false
+                )
+            ) {
+                LocalDataManager.instance.setSharedPreferenceString(
+                    BaseApp.appContext,
+                    Constants.EMAIL,
+                    binding.txtEmail.text
+                )
+                LocalDataManager.instance.setSharedPreferenceString(
+                    BaseApp.appContext,
+                    Constants.XPS,
+                    binding.txtXps.text
+                )
             }
-            LocalDataManager.instance.setSharedPreferenceString(BaseApp.appContext, "token", it.access_token)
+            LocalDataManager.instance.setSharedPreferenceString(
+                BaseApp.appContext,
+                "token",
+                it.access_token
+            )
             viewModel.senRequestInformation()
         }
     }
 
-    private val observerInformation : Observer<UserResponseModel> = Observer{
-        if (it != null){
-           UserManager.instance.user = it.data
+    private val observerInformation: Observer<UserResponseModel> = Observer {
+        if (it != null) {
+            UserManager.instance.user = it.data
             findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
         }
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel {
-            responseToken.observe(viewLifecycleOwner,observerToken)
-            responseUserInformation.observe(viewLifecycleOwner,observerInformation)
+            responseToken.observe(viewLifecycleOwner, observerToken)
+            responseUserInformation.observe(viewLifecycleOwner, observerInformation)
         }
-      clickFun()
-       rememberControl()
+        clickFun()
+        rememberControl()
     }
 
     private fun rememberControl() {
-        if (LocalDataManager.instance.getSharedPreferenceBoolean(BaseApp.appContext, Constants.SAVE_INFORMATION, false)) {
+        if (LocalDataManager.instance.getSharedPreferenceBoolean(
+                BaseApp.appContext,
+                Constants.SAVE_INFORMATION,
+                false
+            )
+        ) {
             viewBinding {
                 rememberMe.isChecked = true
             }
             viewBinding {
-                txtEmail.text = LocalDataManager.instance.getSharedPreferenceString(BaseApp.appContext, Constants.EMAIL, "")
-                txtXps.text = LocalDataManager.instance.getSharedPreferenceString(BaseApp.appContext, Constants.XPS, "")
+                txtEmail.text = LocalDataManager.instance.getSharedPreferenceString(
+                    BaseApp.appContext,
+                    Constants.EMAIL,
+                    ""
+                )
+                txtXps.text = LocalDataManager.instance.getSharedPreferenceString(
+                    BaseApp.appContext,
+                    Constants.XPS,
+                    ""
+                )
             }
 
         }
     }
 
-    private fun clickFun(){
+    private fun clickFun() {
         viewBinding {
 
             rememberMe.setOnCheckedChangeListener { _, p1 ->
                 if (p1) {
-                    LocalDataManager.instance.setSharedPreferenceBoolean(BaseApp.appContext, Constants.SAVE_INFORMATION, true)
+                    LocalDataManager.instance.setSharedPreferenceBoolean(
+                        BaseApp.appContext,
+                        Constants.SAVE_INFORMATION,
+                        true
+                    )
                 } else {
-                    LocalDataManager.instance.setSharedPreferenceBoolean(BaseApp.appContext, Constants.SAVE_INFORMATION, false)
+                    LocalDataManager.instance.setSharedPreferenceBoolean(
+                        BaseApp.appContext,
+                        Constants.SAVE_INFORMATION,
+                        false
+                    )
 
                 }
             }
             btnLogin.setSafeOnClickListener {
-                if (validate()){
-                    viewModel.senRequestToken(LoginRequestModel(binding.txtEmail.text.toString(),binding.txtXps.text.toString()))
+                if (validate()) {
+                    if (LocalDataManager.instance.getSharedPreferenceString(
+                            BaseApp.appContext,
+                            Constants.EMAIL,
+                            ""
+                        ) != binding.txtEmail.text
+                    ) {
+                        LocalDataManager.instance.setSharedPreferenceString(
+                            BaseApp.appContext,
+                            Constants.EMAIL,
+                            ""
+                        )
+                        LocalDataManager.instance.setSharedPreferenceString(
+                            BaseApp.appContext,
+                            Constants.XPS,
+                            ""
+                        )
+                        LocalDataManager.instance.setSharedPreferenceString(
+                            BaseApp.appContext,
+                            "token",
+                            ""
+                        )
+                        Constants.TOKEN_TYPE = emptyString()
+
+                    }
+                    viewModel.senRequestToken(
+                        LoginRequestModel(
+                            binding.txtEmail.text.toString(),
+                            binding.txtXps.text.toString()
+                        )
+                    )
                 }
 
             }
@@ -85,18 +153,18 @@ class LoginFragment : BaseFragment<FragmentLoginBinding,LoginViewModel>(LoginVie
 
     }
 
-    private fun validate(): Boolean{
-       when{
-            !binding.txtEmail.validateUsername(1) ->{
+    private fun validate(): Boolean {
+        when {
+            !binding.txtEmail.validateUsername(1) -> {
                 requireContext().extToast(getString(R.string.e_mail_error_message))
                 return false
             }
-            !binding.txtXps.validateUsername(2)->{
+            !binding.txtXps.validateUsername(2) -> {
                 requireContext().extToast("Geçerli şifre giriniz(Minimum 6 karakter)")
                 return false
             }
         }
-      return true
+        return true
     }
 
 }

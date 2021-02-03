@@ -42,10 +42,12 @@ abstract class BaseFragment<VB : ViewBinding, out BVM : BaseViewModel<BaseReposi
     }
 
     protected val observerErrMsg: Observer<BaseErrorModel> = Observer {
-
+        if (it != null){
             it?.let {
                 errorControl(it)
             }
+        }
+
 
 
     }
@@ -63,8 +65,8 @@ abstract class BaseFragment<VB : ViewBinding, out BVM : BaseViewModel<BaseReposi
 
     protected inline fun viewModel(action: BVM.() -> Unit) {
         action(viewModel)
-        viewModel.showProgress.observe(this, observerProgressBar)
-        viewModel.errMsg?.observe(this, observerErrMsg)
+        viewModel.showProgress.observe(viewLifecycleOwner, observerProgressBar)
+        viewModel.errMsg?.observe(viewLifecycleOwner, observerErrMsg)
     }
 
     protected inline fun viewBinding(action: VB.() -> Unit) = action(binding)

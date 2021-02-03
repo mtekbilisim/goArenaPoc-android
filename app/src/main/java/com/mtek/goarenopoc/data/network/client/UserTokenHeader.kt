@@ -44,7 +44,7 @@ class UserTokenHeader : Interceptor {
 
                 addHeader(
                     "Authorization",
-                    "Bearer ${
+                    "${Constants.TOKEN_TYPE} ${
                         LocalDataManager.instance.getSharedPreferenceString(
                             BaseApp.appContext,
                             "token",
