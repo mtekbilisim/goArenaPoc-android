@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.mtek.goarenopoc.base.BaseViewModel
 import com.mtek.goarenopoc.data.network.response.DashboardResponseModel
 import com.mtek.goarenopoc.data.network.response.ExpectionResponseModel
+import com.mtek.goarenopoc.data.network.response.SalesResponseModel
 import com.mtek.goarenopoc.data.repository.DashboardRepository
 
 class DashboardViewModel : BaseViewModel<DashboardRepository>(DashboardRepository::class) {
@@ -20,6 +21,12 @@ class DashboardViewModel : BaseViewModel<DashboardRepository>(DashboardRepositor
         MutableLiveData()
     val responseShopQuailty: LiveData<DashboardResponseModel> = mutableShopQuailty
 
+    private val mutableSales: MutableLiveData<SalesResponseModel> = MutableLiveData()
+    val responseSales: LiveData<SalesResponseModel> = mutableSales
+
+    private val mutablePersonelStatistic: MutableLiveData<SalesResponseModel> = MutableLiveData()
+    val responsePersonelStatistic: LiveData<SalesResponseModel> = mutablePersonelStatistic
+
     fun getMontlySales() {
         sendRequest {
             repository.getMonthlySales().run {
@@ -30,30 +37,19 @@ class DashboardViewModel : BaseViewModel<DashboardRepository>(DashboardRepositor
         }
     }
 
-    fun getMontlyTarget() {
+    fun getSalesAndTarget(id: Int) {
         sendRequest {
-            repository.getExpectation().run {
-                mutableTarget.postValue(this)
+            repository.getSalesAndTarget(id).run {
+                mutableSales.postValue(this)
                 errMsg?.postValue(errMsg.value)
-                return@run
             }
         }
     }
 
-    fun getMontlyTargetById(id: Int) {
+    fun getPersonSalesAndTarget(id: Int) {
         sendRequest {
-            repository.getExpectationById(id).run {
-                mutableTarget.postValue(this)
-                errMsg?.postValue(errMsg.value)
-                return@run
-            }
-        }
-    }
-
-    fun getFilterByShopPersonel(id: Int) {
-        sendRequest {
-            repository.getDashboardFilterById(id).run {
-                mutableShopQuailty.postValue(this)
+            repository.getPersonSalesAndTarget(id).run {
+                mutablePersonelStatistic.postValue(this)
                 errMsg?.postValue(errMsg.value)
             }
         }

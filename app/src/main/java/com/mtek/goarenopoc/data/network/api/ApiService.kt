@@ -69,4 +69,10 @@ interface ApiService {
 
     @GET("dashboard/")
     suspend fun getDashboardFilterById(@Query("shop") id: Int): DashboardResponseModel
+
+    @GET("dashboard/charts/user/{id}")
+    suspend fun getSalesAndTarget(@Path("id") id: Int): SalesResponseModel
+
+    @GET("dashboard/charts/shop/{id}/employees")
+    suspend fun getPersonSalesAndTarget(@Path("id") id: Int): SalesResponseModel
 }

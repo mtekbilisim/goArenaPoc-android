@@ -23,6 +23,7 @@ import com.mtek.goarenopoc.base.BaseFragment
 import com.mtek.goarenopoc.data.model.DashboardDataModel
 import com.mtek.goarenopoc.data.network.response.DashboardResponseModel
 import com.mtek.goarenopoc.data.network.response.ExpectionResponseModel
+import com.mtek.goarenopoc.data.network.response.SalesResponseModel
 import com.mtek.goarenopoc.databinding.FragmentDashBoardBinding
 import com.mtek.goarenopoc.utils.flag_error
 import com.mtek.goarenopoc.utils.manager.UserManager
@@ -41,96 +42,55 @@ class DashBoardFragment :
     private var adapter: BaseAdapter<DashboardDataModel>? = null
     private var personelDataList: ArrayList<DashboardDataModel> = arrayListOf()
 
-    private val observerMontlySales: Observer<DashboardResponseModel> = Observer {
+    private val observerSales: Observer<SalesResponseModel> = Observer {
         if (it != null) {
-            yValueGroup2.clear()
-            val dataSales = it.data!!.groupBy { productGroup ->
-                productGroup.product_group
-            }
-            for (i in dataSales) {
-                xAxisValues.add(i.key)
-                var amounts: Int = 0
-                for (j in i.value) {
-                    amounts += j.quantity
-                }
-
-                yValueGroup2.add(BarEntry(1f, floatArrayOf(1.toFloat(), amounts.toFloat())))
+            for (i in it.data!!) {
+                xAxisValues.add(i.product_group)
+                yValueGroup2.add(BarEntry(1f, floatArrayOf(1.toFloat(), i.expectation.toFloat())))
+                yValueGroup1.add(BarEntry(1f, floatArrayOf(1.toFloat(), i.sales.toFloat())))
             }
             populateGraphData()
+        }
+    }
+
+    private val observerPersonelStatistic: Observer<SalesResponseModel> = Observer {
+        if (it != null) {
+            for (i in it.data!!) {
+                i.employee?.let { it1 -> xAxisQualityValues.add(it1) }
+                yQualityGroup2.add(BarEntry(1f, floatArrayOf(1.toFloat(), i.expectation.toFloat())))
+                yQualityGroup1.add(BarEntry(1f, floatArrayOf(1.toFloat(), i.sales.toFloat())))
+            }
+            PersonelGraphData()
+        }
+    }
+
+    private val observerMontlySales: Observer<DashboardResponseModel> = Observer {
+        if (it != null) {
             personelDataList = it.data as ArrayList<DashboardDataModel>
             setAdapterData()
         }
-
-    }
-
-    private val observerTarget: Observer<ExpectionResponseModel> = Observer {
-        if (!it.data.isNullOrEmpty()) {
-            yValueGroup1.clear()
-            val dataTarget = it.data.groupBy { expection ->
-                expection.product_group
-            }
-            for (i in dataTarget) {
-                xAxisValues.add(i.key)
-                var quantity = 0
-                for (j in i.value) {
-                    quantity += j.quantity
-                }
-
-                yValueGroup1.add(BarEntry(1f, floatArrayOf(1.toFloat(), quantity.toFloat())))
-            }
-
-            val shopQualityPerson = it.data.groupBy { shopPerson ->
-                shopPerson.user?.first_name
-            }
-            for (k in shopQualityPerson) {
-                k.key?.let { it1 -> xAxisQualityValues.add(it1) }
-                var personTarget = 0
-                for (x in k.value) {
-                    personTarget += x.quantity
-                }
-                yQualityGroup1.add(BarEntry(1f, floatArrayOf(1.toFloat(), personTarget.toFloat())))
-            }
-        }
-    }
-
-    private val observerShopQuality: Observer<DashboardResponseModel> = Observer {
-        if (!it.data.isNullOrEmpty()) {
-
-            val dataQuality = it.data.groupBy { shopPerson ->
-                shopPerson.user?.first_name
-            }
-            for (i in dataQuality) {
-                    i.key?.let { it1 -> xAxisQualityValues.add(it1) }
-                    var personQuality = 0
-                    for (j in i.value) {
-                        personQuality += j.quantity
-                    }
-
-                    yQualityGroup2.add(BarEntry(1f, floatArrayOf(2.toFloat(), personQuality.toFloat())))
-                }
-            PersonelGraphData()
-        }
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel {
+            getSalesAndTarget(13)
+            getMontlySales()
+            UserManager.instance.user?.shopId?.let { getPersonSalesAndTarget(it) }
+            responsePersonelStatistic.observe(viewLifecycleOwner, observerPersonelStatistic)
+            responseSales.observe(viewLifecycleOwner, observerSales)
             monthlySales.observe(viewLifecycleOwner, observerMontlySales)
-            responseTarget.observe(viewLifecycleOwner, observerTarget)
-            responseShopQuailty.observe(viewLifecycleOwner, observerShopQuality)
-            getFilterByShopPersonel(3)
         }
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel {
+        /* viewModel {
 
-            getMontlySales()
-            if (UserManager.instance.user?.employee_type == "MANAGER") getMontlyTargetById(3) else getMontlyTarget()
+             getMontlySales()
+             if (UserManager.instance.user?.employee_type == "MANAGER") getMontlyTargetById(3) else getMontlyTarget()
 
-        }
+         }*/
     }
 
     private fun setAdapterData() {
@@ -237,7 +197,7 @@ class DashBoardFragment :
     private fun PersonelGraphData() {
 
         val barDataSet1 = BarDataSet(yQualityGroup1, "")
-        barDataSet1.color = Color.BLUE
+        barDataSet1.color = Color.LTGRAY
         barDataSet1.setDrawIcons(false)
         barDataSet1.setDrawValues(false)
 
@@ -263,7 +223,7 @@ class DashBoardFragment :
                 8f,
                 8f,
                 null,
-                Color.BLUE
+                Color.LTGRAY
             )
         )
         legenedEntries.add(
