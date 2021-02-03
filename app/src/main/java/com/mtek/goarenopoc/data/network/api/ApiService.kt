@@ -1,5 +1,10 @@
 package com.mtek.goarenopoc.data.network.api
 
+import com.mtek.goarenopoc.data.network.response.DashboardResponseModel
+import com.mtek.goarenopoc.data.network.response.ExpectionResponseModel
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 import com.mtek.goarenopoc.data.model.FeedPlainModel
 import com.mtek.goarenopoc.data.model.MediaModel
 import com.mtek.goarenopoc.data.network.response.*
@@ -18,6 +23,8 @@ interface ApiService {
         @Body requestFeed: FeedPlainModel
     ): PostResponseModel
 
+    @GET("dashboard")
+    suspend fun getMonthlySales(): DashboardResponseModel
     //FeedTextUpdate
     @PUT("feeds/{feedId}")
     suspend fun requestUpdateFeed(
@@ -43,4 +50,9 @@ interface ApiService {
     suspend fun deleteFeed(@Path("feedId") feedId: String)
 
 
+    @GET("dashboard/expectations")
+    suspend fun getExpectation(): ExpectionResponseModel
+
+    @GET("dashboard/expectations/{id}")
+    suspend fun getExpectationById(@Path("id") id: Int): ExpectionResponseModel
 }
