@@ -57,7 +57,7 @@ class CropFragment : BaseFragment<FragmentCropBinding, SplashViewModel>(SplashVi
                             .execute(mSourceUri, mSaveCallback)
                     }
                     override fun onError(e: Throwable) {
-                        flag_error("CropCallBack ${e.message}")
+                      //  flag_error("CropCallBack ${e.message}")
                     }
                 })
         }
@@ -77,7 +77,7 @@ class CropFragment : BaseFragment<FragmentCropBinding, SplashViewModel>(SplashVi
 
     private val mLoadCallback: LoadCallback = object : LoadCallback {
         override fun onSuccess() {
-            requireContext().extToast("LoadCallBack!!!")
+            //requireContext().extToast("LoadCallBack!!!")
         }
 
         override fun onError(e: Throwable) {
@@ -99,7 +99,7 @@ class CropFragment : BaseFragment<FragmentCropBinding, SplashViewModel>(SplashVi
             }
 
             override fun onError(e: Throwable) {
-                flag_error("on Succes ${e.message}")
+              //  flag_error("on Succes ${e.message}")
             }
         }
 

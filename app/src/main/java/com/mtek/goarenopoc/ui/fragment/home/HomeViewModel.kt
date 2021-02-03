@@ -22,7 +22,7 @@ class HomeViewModel : BaseViewModel<HomeRepository>(HomeRepository::class){
                 _mutableFeed.postValue(this)
             }
             errMsg?.let {
-                it.postValue(errMsg.value)
+                it.postValue(errMsg?.value)
             }
         }
     }
@@ -33,7 +33,7 @@ class HomeViewModel : BaseViewModel<HomeRepository>(HomeRepository::class){
                 _mutableDelete.postValue(this)
             }
             errMsg?.let {
-                it.postValue(errMsg.value)
+                it.postValue(errMsg?.value)
             }
         }
     }

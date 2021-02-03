@@ -1,52 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context=".ui.fragment.home.HomeFragment">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/layout_toolbar" />
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/layout_toolbar" />
 
-        <View
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/divider"/>
+            android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_53ssp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            tools:listitem="@layout/row_item_feed_stories"
-            android:id="@+id/recyclerStories"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="vertical"
+                tools:listitem="@layout/row_item_feed_thumnail_layout"
+                android:id="@+id/recyclerFeed"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/divider"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="vertical"
-            tools:listitem="@layout/row_item_feed_thumnail_layout"
-            android:id="@+id/recyclerFeed"/>
-
-
-    </LinearLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
 
 
-</androidx.core.widget.NestedScrollView>
+
+
+
+
+</LinearLayout>

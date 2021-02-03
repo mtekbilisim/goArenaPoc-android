@@ -3,7 +3,7 @@
    >
 
     <shape>
-        <size android:height="@dimen/_3ssp" />
-        <solid android:color="@android:color/darker_gray" />
+        <size android:height="@dimen/_6ssp" />
+        <solid android:color="@color/color_form_view_hint_not_focus" />
     </shape>
 </inset>

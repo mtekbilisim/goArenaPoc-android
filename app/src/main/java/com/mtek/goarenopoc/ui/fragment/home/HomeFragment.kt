@@ -1,120 +1,97 @@
 package com.mtek.goarenopoc.ui.fragment.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.appcompat.widget.AppCompatImageView
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.mtek.goarenopoc.R
-import com.mtek.goarenopoc.base.BaseAdapter
 import com.mtek.goarenopoc.base.BaseFragment
-import com.mtek.goarenopoc.data.model.Data
+import com.mtek.goarenopoc.data.model.Feed
 import com.mtek.goarenopoc.data.model.FeedModel
 import com.mtek.goarenopoc.data.network.response.FeedResponseModel
 import com.mtek.goarenopoc.databinding.FragmentHomeBinding
 import com.mtek.goarenopoc.ui.MainActivity
 import com.mtek.goarenopoc.ui.adapter.homefeed.HomeFeedAdapter
-import com.mtek.goarenopoc.ui.adapter.homefeed.LayoutType
-import com.mtek.goarenopoc.ui.fragment.bottom.FeedEditBottomDialog
-import com.mtek.goarenopoc.utils.*
-import de.hdodenhof.circleimageview.CircleImageView
+import com.mtek.goarenopoc.ui.fragment.SharedViewModel
+import com.mtek.goarenopoc.utils.applyDivider
+import com.mtek.goarenopoc.utils.setSafeOnClickListener
 
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(HomeViewModel::class) {
 
-    override fun getViewBinding() = FragmentHomeBinding.inflate(layoutInflater)
 
-    var responseFeedList: ArrayList<FeedModel>? = arrayListOf()
+    override fun getViewBinding() =  FragmentHomeBinding.inflate(layoutInflater)
+
     private var homeAdapter: HomeFeedAdapter? = null
- private var baseAdapter: BaseAdapter<FeedModel>? = null
+    lateinit var sharedViewModel: SharedViewModel
+    private var responseFeedList : ArrayList<FeedModel> = arrayListOf()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+    }
 
     private val observerFeed: Observer<FeedResponseModel> = Observer {
         if (it != null) {
-            responseFeedList = it.data as ArrayList<FeedModel>?
-           homeAdapter?.setList(responseFeedList)
-            baseAdapter?.setList(responseFeedList)
+            responseFeedList?.clear()
+            responseFeedList = (it.data as ArrayList<FeedModel>?)!!
+            val data = Feed()
+            data.data = it.data
+            sharedViewModel.setFeedList(data)
+            homeAdapter?.setList(responseFeedList)
+            binding.swipeContainer.isRefreshing = false
         }
-        flag_error("${responseFeedList.toString()}")
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (requireContext() as MainActivity).showBottomNav()
         init()
-        storyAdapter()
         setAdapter()
         clickFun()
     }
 
-
-
     private fun init() {
         viewModel {
             feedResponse.observe(viewLifecycleOwner, observerFeed)
-
         }
-       updateNewData()
-    }
+        sharedViewModel.getFeedList().observe(viewLifecycleOwner,{
+            if (it != null){
+                responseFeedList = it.data as ArrayList<FeedModel>
+                homeAdapter?.setList(responseFeedList)
+            }
+        })
 
-    fun updateNewData(){
-        viewModel.senRequestVFeed()
     }
 
     private fun clickFun() {
+        binding.swipeContainer.setOnRefreshListener(OnRefreshListener {
+            viewModel.senRequestVFeed()
+
+        })
+
         binding.toolbar.btnBack.setSafeOnClickListener {
 
 
         }
 
         binding.toolbar.btnAdd.setSafeOnClickListener {
+            sharedViewModel.cleanAllData()
             findNavController().navigate(R.id.action_homeFragment_to_postFragment2)
-        }
-
-    }
-
-    private fun storyAdapter() {
-        val dataList = ArrayList<Data>()
-        dataList.add(Data(LayoutType.Thumnail.id, "1. Hi! I am in View 1"))
-        dataList.add(Data(LayoutType.Thumnail.id, "2. Hi! I am in View 2"))
-        dataList.add(Data(LayoutType.Text.id, "3. Hi! I am in View 3"))
-        dataList.add(Data(LayoutType.Thumnail.id, "4. Hi! I am in View 4"))
-        dataList.add(Data(LayoutType.Thumnail.id, "5. Hi! I am in View 5"))
-        dataList.add(Data(LayoutType.Thumnail.id, "6. Hi! I am in View 6"))
-        dataList.add(Data(LayoutType.Thumnail.id, "7. Hi! I am in View 7"))
-        dataList.add(Data(LayoutType.Text.id, "8. Hi! I am in View 8"))
-        dataList.add(Data(LayoutType.Thumnail.id, "9. Hi! I am in View 9"))
-        dataList.add(Data(LayoutType.Thumnail.id, "10. Hi! I am in View 10"))
-        dataList.add(Data(LayoutType.Text.id, "11. Hi! I am in View 11"))
-        dataList.add(Data(LayoutType.Thumnail.id, "12. Hi! I am in View 12"))
-
-      baseAdapter =   BaseAdapter(
-            requireContext(), R.layout.row_item_feed_stories,
-            responseFeedList
-        ) { v, item, position ->
-            val view = v?.findViewById<View>(R.id.view)
-            val imageView = v?.findViewById<CircleImageView>(R.id.profileImage)
-
-            loadImageCircle(imageView!!,item.user?.avatar, getProgressDrawable(imageView.context))
-
-            if (position != 0) {
-                view?.gone()
-            }
-
-        }
-
-        binding.recyclerStories.apply {
-            adapter = baseAdapter
         }
 
     }
 
     private fun setAdapter() {
         homeAdapter = HomeFeedAdapter(responseFeedList as ArrayList<FeedModel>) {
-               if ( it.isDeleteFunWork){
-                   viewModel.sendRequestDelete(it.id.toString())
-                   viewModel.senRequestVFeed()
-               }
+            if (it.isDeleteFunWork) {
+                viewModel.sendRequestDelete(it.id.toString())
+                viewModel.senRequestVFeed()
+            }
         }
         binding.recyclerFeed.apply {
             adapter = homeAdapter
@@ -122,6 +99,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(HomeViewMo
         }.also {
             it.applyDivider()
         }
+
     }
 
 

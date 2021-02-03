@@ -105,7 +105,6 @@ fun loadImage(
         .placeholder(progressDrawable)
         .error(R.mipmap.ic_launcher_round)
         .centerCrop()
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
     Glide.with(view.context)
         .setDefaultRequestOptions(options)
         .load(url)
@@ -120,7 +119,6 @@ fun loadImageCircle(
         .placeholder(progressDrawable)
         .error(R.mipmap.ic_launcher_round)
         .centerCrop()
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
     Glide.with(view.context)
         .setDefaultRequestOptions(options)
         .load(url)
@@ -135,7 +133,6 @@ fun loadImageLocal(
         .placeholder(progressDrawable)
         .error(R.mipmap.ic_launcher_round)
         .centerCrop()
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
     Glide.with(view.context)
         .setDefaultRequestOptions(options)
         .load(File(uri?.path))
@@ -248,6 +245,11 @@ fun <T : View> T.isBackButton(context: Context) {
     }
 }
 
+/**
+* Manages the various graphs needed for a [BottomNavigationView].
+*
+* This sample is a workaround until the Navigation Component supports multiple back stacks.
+*/
 fun BottomNavigationView.setupWithNavController(
     navGraphIds: List<Int>,
     fragmentManager: FragmentManager,
@@ -464,7 +466,6 @@ private fun FragmentManager.isOnBackStack(backStackName: String): Boolean {
 }
 
 private fun getFragmentTag(index: Int) = "bottomNavigation#$index"
-
 fun NavController.popBackStackAllInstances(destination: Int, inclusive: Boolean): Boolean {
     var popped: Boolean
     while (true) {

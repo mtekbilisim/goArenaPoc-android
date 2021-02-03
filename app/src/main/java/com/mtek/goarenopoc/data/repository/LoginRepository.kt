@@ -9,4 +9,7 @@ class LoginRepository (private val service : ApiService) : BaseRepository(){
     suspend fun getAuthentication(request : LoginRequestModel) = service.authentication(request)
 
     suspend fun getUserInformation() = service.getUser()
+
+    suspend fun feedRequest() = service.feedAllRequest()
+
 }
