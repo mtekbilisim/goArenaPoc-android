@@ -127,7 +127,7 @@ MIT lisansı altında dağıtılmaktadır.</br>
 <!-- CONTACT -->
 ## İletişim
 
-Burakcan Sezgin - [@brkcnszgn](https://www.linkedin.com/brkcnszgn/) - burakcan.sezgin@mtekbilisim.com
+Burakcan Sezgin - [@brkcnszgn](https://www.linkedin.com/in/brkcnszgn/) - burakcan.sezgin@mtekbilisim.com
 
 Proje linki : [https://github.com/mtekbilisim/goArenaPoc-android)
 
@@ -153,7 +153,7 @@ Bu bökümanın hazırlanmasında emeği geçen diğer kütüphaneler :
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
 [license-url]: https://opensource.org/licenses/MIT
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://www.linkedin.com/brkcnszgn/
+[linkedin-url]: https://www.linkedin.com/in/brkcnszgn/
 [product-screenshot]: images/screenshot.png
 
 -------------
